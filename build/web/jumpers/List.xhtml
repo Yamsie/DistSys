@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.ListJumpersTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:form styleClass="jsfcrud_list_form">
+                <h:panelGroup id="messagePanel" layout="block">
+                    <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+                </h:panelGroup>
+                <h:outputText escape="false" value="#{bundle.ListJumpersEmpty}" rendered="#{jumpersController.items.rowCount == 0}"/>
+                <h:panelGroup rendered="#{jumpersController.items.rowCount > 0}">
+                    <h:outputText value="#{jumpersController.pagination.pageFirstItem + 1}..#{jumpersController.pagination.pageLastItem + 1}/#{jumpersController.pagination.itemsCount}"/>&nbsp;
+                    <h:commandLink action="#{jumpersController.previous}" value="#{bundle.Previous} #{jumpersController.pagination.pageSize}" rendered="#{jumpersController.pagination.hasPreviousPage}"/>&nbsp;
+                    <h:commandLink action="#{jumpersController.next}" value="#{bundle.Next} #{jumpersController.pagination.pageSize}" rendered="#{jumpersController.pagination.hasNextPage}"/>&nbsp;
+                    <h:dataTable value="#{jumpersController.items}" var="item" border="0" cellpadding="2" cellspacing="0" rowClasses="jsfcrud_odd_row,jsfcrud_even_row" rules="all" style="border:solid 1px">
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListJumpersTitle_itemId}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.itemId}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListJumpersTitle_type}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.type}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListJumpersTitle_size}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.size}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListJumpersTitle_price}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.price}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListJumpersTitle_colour}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.colour}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="&nbsp;"/>
+                            </f:facet>
+                            <h:commandLink action="#{jumpersController.prepareView}" value="#{bundle.ListJumpersViewLink}"/>
+                            <h:outputText value=" "/>
+                            <h:commandLink action="#{jumpersController.prepareEdit}" value="#{bundle.ListJumpersEditLink}"/>
+                            <h:outputText value=" "/>
+                            <h:commandLink action="#{jumpersController.destroy}" value="#{bundle.ListJumpersDestroyLink}"/>
+                        </h:column>
+                    </h:dataTable>
+                </h:panelGroup>
+                <br />
+                <h:commandLink action="#{jumpersController.prepareCreate}" value="#{bundle.ListJumpersCreateLink}"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.ListJumpersIndexLink}"/>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

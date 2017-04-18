@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.EditTransactionsTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="#{bundle.EditTransactionsLabel_transId}" for="transId" />
+                    <h:inputText id="transId" value="#{transactionsController.selected.transId}" title="#{bundle.EditTransactionsTitle_transId}" required="true" requiredMessage="#{bundle.EditTransactionsRequiredMessage_transId}"/>
+                    <h:outputLabel value="#{bundle.EditTransactionsLabel_saleId}" for="saleId" />
+                    <h:inputText id="saleId" value="#{transactionsController.selected.saleId}" title="#{bundle.EditTransactionsTitle_saleId}" />
+                    <h:outputLabel value="#{bundle.EditTransactionsLabel_returnId}" for="returnId" />
+                    <h:inputText id="returnId" value="#{transactionsController.selected.returnId}" title="#{bundle.EditTransactionsTitle_returnId}" />
+                    <h:outputLabel value="#{bundle.EditTransactionsLabel_itemId}" for="itemId" />
+                    <h:inputText id="itemId" value="#{transactionsController.selected.itemId}" title="#{bundle.EditTransactionsTitle_itemId}" required="true" requiredMessage="#{bundle.EditTransactionsRequiredMessage_itemId}"/>
+                    <h:outputLabel value="#{bundle.EditTransactionsLabel_price}" for="price" />
+                    <h:inputText id="price" value="#{transactionsController.selected.price}" title="#{bundle.EditTransactionsTitle_price}" required="true" requiredMessage="#{bundle.EditTransactionsRequiredMessage_price}"/>
+                </h:panelGrid>
+                <h:commandLink action="#{transactionsController.update}" value="#{bundle.EditTransactionsSaveLink}"/>
+                <br />
+                <br />
+                <h:link outcome="View" value="#{bundle.EditTransactionsViewLink}"/>
+                <br />
+                <h:commandLink action="#{transactionsController.prepareList}" value="#{bundle.EditTransactionsShowAllLink}" immediate="true"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.EditTransactionsIndexLink}" />
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

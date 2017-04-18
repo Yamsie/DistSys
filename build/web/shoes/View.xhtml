@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.ViewShoesTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputText value="#{bundle.ViewShoesLabel_itemId}"/>
+                    <h:outputText value="#{shoesController.selected.itemId}" title="#{bundle.ViewShoesTitle_itemId}"/>
+                    <h:outputText value="#{bundle.ViewShoesLabel_type}"/>
+                    <h:outputText value="#{shoesController.selected.type}" title="#{bundle.ViewShoesTitle_type}"/>
+                    <h:outputText value="#{bundle.ViewShoesLabel_size}"/>
+                    <h:outputText value="#{shoesController.selected.size}" title="#{bundle.ViewShoesTitle_size}"/>
+                    <h:outputText value="#{bundle.ViewShoesLabel_price}"/>
+                    <h:outputText value="#{shoesController.selected.price}" title="#{bundle.ViewShoesTitle_price}"/>
+                    <h:outputText value="#{bundle.ViewShoesLabel_colour}"/>
+                    <h:outputText value="#{shoesController.selected.colour}" title="#{bundle.ViewShoesTitle_colour}"/>
+                </h:panelGrid>
+                <br />
+                <h:commandLink action="#{shoesController.destroyAndView}" value="#{bundle.ViewShoesDestroyLink}"/>
+                <br />
+                <br />
+                <h:link outcome="Edit" value="#{bundle.ViewShoesEditLink}"/>
+                <br />
+                <h:commandLink action="#{shoesController.prepareCreate}" value="#{bundle.ViewShoesCreateLink}" />
+                <br />
+                <h:commandLink action="#{shoesController.prepareList}" value="#{bundle.ViewShoesShowAllLink}"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.ViewShoesIndexLink}"/>
+
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>
