@@ -19,7 +19,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author paddy
+ * @author aoife_000
  */
 @Entity
 @Table(name = "JUMPERS")
@@ -30,7 +30,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Jumpers.findByType", query = "SELECT j FROM Jumpers j WHERE j.type = :type")
     , @NamedQuery(name = "Jumpers.findBySize", query = "SELECT j FROM Jumpers j WHERE j.size = :size")
     , @NamedQuery(name = "Jumpers.findByPrice", query = "SELECT j FROM Jumpers j WHERE j.price = :price")
-    , @NamedQuery(name = "Jumpers.findByColour", query = "SELECT j FROM Jumpers j WHERE j.colour = :colour")})
+    , @NamedQuery(name = "Jumpers.findByColour", query = "SELECT j FROM Jumpers j WHERE j.colour = :colour")
+    , @NamedQuery(name = "Jumpers.findByQuantity", query = "SELECT j FROM Jumpers j WHERE j.quantity = :quantity")})
 public class Jumpers implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -55,6 +56,10 @@ public class Jumpers implements Serializable {
     @Size(max = 20)
     @Column(name = "COLOUR")
     private String colour;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "QUANTITY")
+    private int quantity;
 
     public Jumpers() {
     }
@@ -63,11 +68,12 @@ public class Jumpers implements Serializable {
         this.itemId = itemId;
     }
 
-    public Jumpers(Integer itemId, String type, double size, double price) {
+    public Jumpers(Integer itemId, String type, double size, double price, int quantity) {
         this.itemId = itemId;
         this.type = type;
         this.size = size;
         this.price = price;
+        this.quantity = quantity;
     }
 
     public Integer getItemId() {
@@ -108,6 +114,14 @@ public class Jumpers implements Serializable {
 
     public void setColour(String colour) {
         this.colour = colour;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 
     @Override

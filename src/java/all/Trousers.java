@@ -19,7 +19,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author paddy
+ * @author aoife_000
  */
 @Entity
 @Table(name = "TROUSERS")
@@ -30,7 +30,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Trousers.findByType", query = "SELECT t FROM Trousers t WHERE t.type = :type")
     , @NamedQuery(name = "Trousers.findBySize", query = "SELECT t FROM Trousers t WHERE t.size = :size")
     , @NamedQuery(name = "Trousers.findByPrice", query = "SELECT t FROM Trousers t WHERE t.price = :price")
-    , @NamedQuery(name = "Trousers.findByColour", query = "SELECT t FROM Trousers t WHERE t.colour = :colour")})
+    , @NamedQuery(name = "Trousers.findByColour", query = "SELECT t FROM Trousers t WHERE t.colour = :colour")
+    , @NamedQuery(name = "Trousers.findByQuantity", query = "SELECT t FROM Trousers t WHERE t.quantity = :quantity")})
 public class Trousers implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -55,6 +56,10 @@ public class Trousers implements Serializable {
     @Size(max = 20)
     @Column(name = "COLOUR")
     private String colour;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "QUANTITY")
+    private int quantity;
 
     public Trousers() {
     }
@@ -63,11 +68,12 @@ public class Trousers implements Serializable {
         this.itemId = itemId;
     }
 
-    public Trousers(Integer itemId, String type, double size, double price) {
+    public Trousers(Integer itemId, String type, double size, double price, int quantity) {
         this.itemId = itemId;
         this.type = type;
         this.size = size;
         this.price = price;
+        this.quantity = quantity;
     }
 
     public Integer getItemId() {
@@ -108,6 +114,14 @@ public class Trousers implements Serializable {
 
     public void setColour(String colour) {
         this.colour = colour;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 
     @Override

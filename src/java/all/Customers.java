@@ -19,7 +19,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author James
+ * @author aoife_000
  */
 @Entity
 @Table(name = "CUSTOMERS")
@@ -28,9 +28,9 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Customers.findAll", query = "SELECT c FROM Customers c")
     , @NamedQuery(name = "Customers.findByCustomerId", query = "SELECT c FROM Customers c WHERE c.customerId = :customerId")
     , @NamedQuery(name = "Customers.findByName", query = "SELECT c FROM Customers c WHERE c.name = :name")
-    , @NamedQuery(name = "Customers.findByAddress", query = "SELECT c FROM Customers c WHERE c.address = :address")
     , @NamedQuery(name = "Customers.findByEmail", query = "SELECT c FROM Customers c WHERE c.email = :email")
     , @NamedQuery(name = "Customers.findByMobile", query = "SELECT c FROM Customers c WHERE c.mobile = :mobile")
+    , @NamedQuery(name = "Customers.findByAddress", query = "SELECT c FROM Customers c WHERE c.address = :address")
     , @NamedQuery(name = "Customers.findByPassword", query = "SELECT c FROM Customers c WHERE c.password = :password")
     , @NamedQuery(name = "Customers.findByUsername", query = "SELECT c FROM Customers c WHERE c.username = :username")
     , @NamedQuery(name = "Customers.checkCredentials", query = "SELECT c FROM Customers c WHERE c.username = :username AND c.password = :password")})
@@ -47,11 +47,6 @@ public class Customers implements Serializable {
     @Size(min = 1, max = 50)
     @Column(name = "NAME")
     private String name;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 100)
-    @Column(name = "ADDRESS")
-    private String address;
     // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Invalid email")//if the field contains email address consider using this annotation to enforce field validation
     @Size(max = 20)
     @Column(name = "EMAIL")
@@ -59,6 +54,9 @@ public class Customers implements Serializable {
     @Size(max = 20)
     @Column(name = "MOBILE")
     private String mobile;
+    @Size(max = 100)
+    @Column(name = "ADDRESS")
+    private String address;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 255)
@@ -77,10 +75,9 @@ public class Customers implements Serializable {
         this.customerId = customerId;
     }
 
-    public Customers(Integer customerId, String name, String address, String password, String username) {
+    public Customers(Integer customerId, String name, String password, String username) {
         this.customerId = customerId;
         this.name = name;
-        this.address = address;
         this.password = password;
         this.username = username;
     }
@@ -101,14 +98,6 @@ public class Customers implements Serializable {
         this.name = name;
     }
 
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
     public String getEmail() {
         return email;
     }
@@ -123,6 +112,14 @@ public class Customers implements Serializable {
 
     public void setMobile(String mobile) {
         this.mobile = mobile;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public String getPassword() {

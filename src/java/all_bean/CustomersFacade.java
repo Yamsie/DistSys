@@ -27,7 +27,7 @@ public class CustomersFacade extends AbstractFacade<Customers> {
     }
     
     public Customers getByUsernameAndPassword(String username, String password) {
-        Customers c;
+        Customers c = null;
         try {
         c = (Customers) em.createNamedQuery("Customers.checkCredentials")
                 .setParameter("username", username).setParameter("password", password).getSingleResult();

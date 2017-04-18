@@ -19,7 +19,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author paddy
+ * @author aoife_000
  */
 @Entity
 @Table(name = "SHIRTS")
@@ -30,7 +30,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Shirts.findByType", query = "SELECT s FROM Shirts s WHERE s.type = :type")
     , @NamedQuery(name = "Shirts.findBySize", query = "SELECT s FROM Shirts s WHERE s.size = :size")
     , @NamedQuery(name = "Shirts.findByPrice", query = "SELECT s FROM Shirts s WHERE s.price = :price")
-    , @NamedQuery(name = "Shirts.findByColour", query = "SELECT s FROM Shirts s WHERE s.colour = :colour")})
+    , @NamedQuery(name = "Shirts.findByColour", query = "SELECT s FROM Shirts s WHERE s.colour = :colour")
+    , @NamedQuery(name = "Shirts.findByQuantity", query = "SELECT s FROM Shirts s WHERE s.quantity = :quantity")})
 public class Shirts implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -55,6 +56,10 @@ public class Shirts implements Serializable {
     @Size(max = 20)
     @Column(name = "COLOUR")
     private String colour;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "QUANTITY")
+    private int quantity;
 
     public Shirts() {
     }
@@ -63,11 +68,12 @@ public class Shirts implements Serializable {
         this.itemId = itemId;
     }
 
-    public Shirts(Integer itemId, String type, double size, double price) {
+    public Shirts(Integer itemId, String type, double size, double price, int quantity) {
         this.itemId = itemId;
         this.type = type;
         this.size = size;
         this.price = price;
+        this.quantity = quantity;
     }
 
     public Integer getItemId() {
@@ -108,6 +114,14 @@ public class Shirts implements Serializable {
 
     public void setColour(String colour) {
         this.colour = colour;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 
     @Override
