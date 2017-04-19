@@ -59,12 +59,14 @@
                             <h:commandLink action="#{shirtsController.prepareEdit}" value="#{bundle.ListShirtsEditLink}"/>
                             <h:outputText value=" "/>
                             <h:commandLink action="#{shirtsController.destroy}" value="#{bundle.ListShirtsDestroyLink}"/>
+                            <h:outputText value=" "/>                           
                         </h:column>
                     </h:dataTable>
                 </h:panelGroup>
                 <br />
                 <h:commandLink action="#{shirtsController.prepareCreate}" value="#{bundle.ListShirtsCreateLink}"/>
                 <br />
+                <h:commandLink action="searchShirtsPage" value="#{bundle.searchShirtsLink}"/>
                 <br />
                 <h:link outcome="/index" value="#{bundle.ListShirtsIndexLink}"/>
             </h:form>

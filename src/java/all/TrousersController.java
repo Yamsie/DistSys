@@ -27,7 +27,25 @@ public class TrousersController implements Serializable {
     private all_bean.TrousersFacade ejbFacade;
     private PaginationHelper pagination;
     private int selectedItemIndex;
+    private String searchItem;
+    private String searchChoice;
 
+    public String getSearchItem() {
+        return searchItem;
+    }
+
+    public void setSearchItem(String searchItem) {
+        this.searchItem = searchItem;
+    }
+
+    public String getSearchChoice() {
+        return searchChoice;
+    }
+
+    public void setSearchChoice(String searchChoice) {
+        this.searchChoice = searchChoice;
+    }
+    
     public TrousersController() {
     }
 
@@ -69,6 +87,21 @@ public class TrousersController implements Serializable {
     public String prepareView() {
         current = (Trousers) getItems().getRowData();
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
+        return "View";
+    }
+    
+    public String prepareSearchView() {
+        current = null;
+        try{
+            if(this.searchChoice.equals("name")){
+                current = (Trousers) ejbFacade.getAllByType(searchItem);
+            }
+            else{
+                int id = Integer.parseInt(this.searchItem.trim());
+                current = getTrousers(id);                 
+            }
+        }
+        catch(Exception ex) {}
         return "View";
     }
 

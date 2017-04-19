@@ -27,6 +27,24 @@ public class ShoesController implements Serializable {
     private all_bean.ShoesFacade ejbFacade;
     private PaginationHelper pagination;
     private int selectedItemIndex;
+    private String searchItem;
+    private String searchChoice;
+
+    public String getSearchItem() {
+        return searchItem;
+    }
+
+    public void setSearchItem(String searchItem) {
+        this.searchItem = searchItem;
+    }
+
+    public String getSearchChoice() {
+        return searchChoice;
+    }
+
+    public void setSearchChoice(String searchChoice) {
+        this.searchChoice = searchChoice;
+    }
 
     public ShoesController() {
     }
@@ -71,7 +89,22 @@ public class ShoesController implements Serializable {
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
         return "View";
     }
-
+    
+    public String prepareSearchView() {
+        current = null;
+        try{
+            if(this.searchChoice.equals("name")){
+                current = (Shoes) ejbFacade.getAllByType(searchItem);
+            }
+            else{
+                int id = Integer.parseInt(this.searchItem.trim());
+                current = getShoes(id);                 
+            }
+        }
+        catch(Exception ex) {}
+        return "View";
+    }
+    
     public String prepareCreate() {
         current = new Shoes();
         selectedItemIndex = -1;

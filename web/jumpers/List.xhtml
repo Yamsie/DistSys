@@ -59,12 +59,16 @@
                             <h:commandLink action="#{jumpersController.prepareEdit}" value="#{bundle.ListJumpersEditLink}"/>
                             <h:outputText value=" "/>
                             <h:commandLink action="#{jumpersController.destroy}" value="#{bundle.ListJumpersDestroyLink}"/>
+                            <h:outputText value=" "/>
+                            <h:commandButton value ="Add to Cart" action="#{jumpersController.prepareCart}"/>
+                            
                         </h:column>
                     </h:dataTable>
                 </h:panelGroup>
                 <br />
                 <h:commandLink action="#{jumpersController.prepareCreate}" value="#{bundle.ListJumpersCreateLink}"/>
                 <br />
+                <h:commandLink action="searchJumpersPage" value="#{bundle.searchJumpersLink}"/>
                 <br />
                 <h:link outcome="/index" value="#{bundle.ListJumpersIndexLink}"/>
             </h:form>

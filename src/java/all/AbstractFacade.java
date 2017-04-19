@@ -1,17 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package all;
 
 import java.util.List;
 import javax.persistence.EntityManager;
 
-/**
- *
- * @author James
- */
 public abstract class AbstractFacade<T> {
 
     private Class<T> entityClass;
@@ -59,6 +50,31 @@ public abstract class AbstractFacade<T> {
         cq.select(getEntityManager().getCriteriaBuilder().count(rt));
         javax.persistence.Query q = getEntityManager().createQuery(cq);
         return ((Long) q.getSingleResult()).intValue();
+    }
+    
+    public T getByName(String n){
+        T current = null;
+        current = (T) getEntityManager().createNamedQuery("T.findByName")
+                .setParameter("name", n).getSingleResult();
+        return current;
+    }
+    
+    public T getByProductType(String t){
+        T current = null;
+        T c = (T) getEntityManager().createNamedQuery("T.findAllByType")
+                .setParameter("type", t).getSingleResult();
+        return current;
+    }
+    
+    public String getObjectType(Object ob){
+        return ob.getClass().getName();
+    }
+    
+    public T getAllByType(String t){
+        T current = null;
+        current = (T) getEntityManager().createNamedQuery("T.findByType")
+                .setParameter("type", t).getSingleResult();
+        return current;
     }
     
 }

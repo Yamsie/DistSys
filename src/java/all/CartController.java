@@ -66,6 +66,12 @@ public class CartController implements Serializable {
         recreateModel();
         return "List";
     }
+    
+    public void addItem(){
+        current = (Cart) getItems().getRowData();
+        
+        //ejbFacade.addItemToCart(current.getQuantity(), current.getCartPK());
+    }
 
     public String prepareView() {
         current = (Cart) getItems().getRowData();

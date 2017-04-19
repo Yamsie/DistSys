@@ -2,7 +2,7 @@ package all;
 
 import all.util.JsfUtil;
 import all.util.PaginationHelper;
-import all_bean.ShirtsFacade;
+import all_bean.ProductsFacade;
 
 import java.io.Serializable;
 import java.util.ResourceBundle;
@@ -17,18 +17,24 @@ import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
 
-@Named("shirtsController")
+@Named("productsController")
 @SessionScoped
-public class ShirtsController implements Serializable {
+public class ProductsController implements Serializable {
 
-    private Shirts current;
+    private Products current;
     private DataModel items = null;
     @EJB
-    private all_bean.ShirtsFacade ejbFacade;
+    private all_bean.ProductsFacade ejbFacade;
+    @EJB
+    private all_bean.CartFacade cartFacade;
     private PaginationHelper pagination;
     private int selectedItemIndex;
     private String searchItem;
     private String searchChoice;
+    private int cartQuantity;
+
+    public ProductsController() {
+    }
 
     public String getSearchItem() {
         return searchItem;
@@ -46,18 +52,24 @@ public class ShirtsController implements Serializable {
         this.searchChoice = searchChoice;
     }
 
-    public ShirtsController() {
+    public int getCartQuantity() {
+        return cartQuantity;
     }
 
-    public Shirts getSelected() {
+    public void setCartQuantity(int cartQuantity) {
+        this.cartQuantity = cartQuantity;
+    }
+
+    
+    public Products getSelected() {
         if (current == null) {
-            current = new Shirts();
+            current = new Products();
             selectedItemIndex = -1;
         }
         return current;
     }
 
-    private ShirtsFacade getFacade() {
+    private ProductsFacade getFacade() {
         return ejbFacade;
     }
 
@@ -78,6 +90,20 @@ public class ShirtsController implements Serializable {
         }
         return pagination;
     }
+    
+    public String addItem(){
+        int cust = 12345;
+        CartPK pk = new CartPK(cust, current.getItemId());
+        Cart cart = new Cart(pk, cust);
+        cartFacade.create(cart);
+        return "/cart/List";
+    }
+    
+    public String prepareCart(){
+        current = (Products) getItems().getRowData();
+        return "addProductsToCart";
+    }
+
 
     public String prepareList() {
         recreateModel();
@@ -85,7 +111,7 @@ public class ShirtsController implements Serializable {
     }
 
     public String prepareView() {
-        current = (Shirts) getItems().getRowData();
+        current = (Products) getItems().getRowData();
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
         return "View";
     }
@@ -94,19 +120,20 @@ public class ShirtsController implements Serializable {
         current = null;
         try{
             if(this.searchChoice.equals("name")){
-                current = (Shirts) ejbFacade.getAllByType(searchItem);
+                current = (Products) ejbFacade.getByName(searchItem);
             }
             else{
                 int id = Integer.parseInt(this.searchItem.trim());
-                current = getShirts(id);                 
+                current = getProducts(id);                 
             }
         }
         catch(Exception ex) {}
         return "View";
     }
-    
+
+
     public String prepareCreate() {
-        current = new Shirts();
+        current = new Products();
         selectedItemIndex = -1;
         return "Create";
     }
@@ -114,7 +141,7 @@ public class ShirtsController implements Serializable {
     public String create() {
         try {
             getFacade().create(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("ShirtsCreated"));
+            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("ProductsCreated"));
             return prepareCreate();
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
@@ -123,7 +150,7 @@ public class ShirtsController implements Serializable {
     }
 
     public String prepareEdit() {
-        current = (Shirts) getItems().getRowData();
+        current = (Products) getItems().getRowData();
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
         return "Edit";
     }
@@ -131,7 +158,7 @@ public class ShirtsController implements Serializable {
     public String update() {
         try {
             getFacade().edit(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("ShirtsUpdated"));
+            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("ProductsUpdated"));
             return "View";
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
@@ -140,7 +167,7 @@ public class ShirtsController implements Serializable {
     }
 
     public String destroy() {
-        current = (Shirts) getItems().getRowData();
+        current = (Products) getItems().getRowData();
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
         performDestroy();
         recreatePagination();
@@ -164,7 +191,7 @@ public class ShirtsController implements Serializable {
     private void performDestroy() {
         try {
             getFacade().remove(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("ShirtsDeleted"));
+            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("ProductsDeleted"));
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
         }
@@ -220,21 +247,21 @@ public class ShirtsController implements Serializable {
         return JsfUtil.getSelectItems(ejbFacade.findAll(), true);
     }
 
-    public Shirts getShirts(java.lang.Integer id) {
+    public Products getProducts(java.lang.Integer id) {
         return ejbFacade.find(id);
     }
 
-    @FacesConverter(forClass = Shirts.class)
-    public static class ShirtsControllerConverter implements Converter {
+    @FacesConverter(forClass = Products.class)
+    public static class ProductsControllerConverter implements Converter {
 
         @Override
         public Object getAsObject(FacesContext facesContext, UIComponent component, String value) {
             if (value == null || value.length() == 0) {
                 return null;
             }
-            ShirtsController controller = (ShirtsController) facesContext.getApplication().getELResolver().
-                    getValue(facesContext.getELContext(), null, "shirtsController");
-            return controller.getShirts(getKey(value));
+            ProductsController controller = (ProductsController) facesContext.getApplication().getELResolver().
+                    getValue(facesContext.getELContext(), null, "productsController");
+            return controller.getProducts(getKey(value));
         }
 
         java.lang.Integer getKey(String value) {
@@ -254,11 +281,11 @@ public class ShirtsController implements Serializable {
             if (object == null) {
                 return null;
             }
-            if (object instanceof Shirts) {
-                Shirts o = (Shirts) object;
+            if (object instanceof Products) {
+                Products o = (Products) object;
                 return getStringKey(o.getItemId());
             } else {
-                throw new IllegalArgumentException("object " + object + " is of type " + object.getClass().getName() + "; expected type: " + Shirts.class.getName());
+                throw new IllegalArgumentException("object " + object + " is of type " + object.getClass().getName() + "; expected type: " + Products.class.getName());
             }
         }
 

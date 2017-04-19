@@ -17,6 +17,7 @@ import javax.faces.convert.FacesConverter;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
+import javax.persistence.NoResultException;
 
 @Named("customersController")
 @Stateful
@@ -31,6 +32,24 @@ public class CustomersController implements Serializable {
     private int selectedItemIndex;
     private String username;
     private String password;
+    private String searchItem;
+    private String searchChoice;
+
+    public String getSearchChoice() {
+        return searchChoice;
+    }
+
+    public void setSearchChoice(String searchChoice) {
+        this.searchChoice = searchChoice;
+    }
+
+    public String getSearchItem() {
+        return searchItem;
+    }
+
+    public void setSearchItem(String searchItem) {
+        this.searchItem = searchItem;
+    }
     
     
     public CustomersController() {
@@ -105,6 +124,21 @@ public class CustomersController implements Serializable {
         return "View";
     }
 
+    public String prepareSearchView() {
+        current = null;
+        try{
+            if(this.searchChoice.equals("name")){
+                current = (Customers) ejbFacade.getByName(searchItem);
+            }
+            else{
+                int id = Integer.parseInt(this.searchItem.trim());
+                current = getCustomers(id);                 
+            }
+        }
+        catch(Exception ex) {}
+        return "customers/View";
+    }
+    
     public String prepareCreate() {
         current = new Customers();
         selectedItemIndex = -1;

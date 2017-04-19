@@ -59,12 +59,14 @@
                             <h:commandLink action="#{trousersController.prepareEdit}" value="#{bundle.ListTrousersEditLink}"/>
                             <h:outputText value=" "/>
                             <h:commandLink action="#{trousersController.destroy}" value="#{bundle.ListTrousersDestroyLink}"/>
+                            <h:outputText value=" "/>                                                       
                         </h:column>
                     </h:dataTable>
                 </h:panelGroup>
                 <br />
                 <h:commandLink action="#{trousersController.prepareCreate}" value="#{bundle.ListTrousersCreateLink}"/>
                 <br />
+                <h:commandLink action="searchTrousersPage" value="#{bundle.SearchTrousersLink}"/>
                 <br />
                 <h:link outcome="/index" value="#{bundle.ListTrousersIndexLink}"/>
             </h:form>

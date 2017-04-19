@@ -42,4 +42,18 @@ public class CustomersFacade extends AbstractFacade<Customers> {
         super(Customers.class);
     }
     
+    @Override
+    public Customers find(Object id) throws NoResultException {
+        Customers c = null;
+        c = (Customers) em.createNamedQuery("Customers.findByCustomerId")
+                .setParameter("customerId", id).getSingleResult();
+        return c;
+    }
+    
+    public Customers getByName(String n) throws NoResultException {
+        Customers current = null;
+        current = (Customers) em.createNamedQuery("Customers.findByName")
+                .setParameter("name", n).getSingleResult();
+        return current;
+    }
 }

@@ -25,8 +25,37 @@ public class JumpersController implements Serializable {
     private DataModel items = null;
     @EJB
     private all_bean.JumpersFacade ejbFacade;
+    @EJB
+    private all_bean.CartFacade cartFacade;
     private PaginationHelper pagination;
     private int selectedItemIndex;
+    private String searchItem;
+    private String searchChoice;
+    private int cartQuantity;
+
+    public int getCartQuantity() {
+        return cartQuantity;
+    }
+
+    public void setCartQuantity(int cartQuantity) {
+        this.cartQuantity = cartQuantity;
+    }
+
+    public String getSearchItem() {
+        return searchItem;
+    }
+
+    public void setSearchItem(String searchItem) {
+        this.searchItem = searchItem;
+    }
+
+    public String getSearchChoice() {
+        return searchChoice;
+    }
+
+    public void setSearchChoice(String searchChoice) {
+        this.searchChoice = searchChoice;
+    }
 
     public JumpersController() {
     }
@@ -60,6 +89,19 @@ public class JumpersController implements Serializable {
         }
         return pagination;
     }
+    
+    public String addItem(){
+        int cust = 12345;
+        CartPK pk = new CartPK(cust, current.getItemId());
+        Cart cart = new Cart(pk, cust);
+        cartFacade.create(cart);
+        return "cart/List";
+    }
+    
+    public String prepareCart(){
+        current = (Jumpers) getItems().getRowData();
+        return "addToCart";
+    }
 
     public String prepareList() {
         recreateModel();
@@ -69,6 +111,21 @@ public class JumpersController implements Serializable {
     public String prepareView() {
         current = (Jumpers) getItems().getRowData();
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
+        return "View";
+    }
+    
+    public String prepareSearchView() {
+        current = null;
+        try{
+            if(this.searchChoice.equals("name")){
+                current = (Jumpers) ejbFacade.getAllByType(searchItem);
+            }
+            else{
+                int id = Integer.parseInt(this.searchItem.trim());
+                current = getJumpers(id);                 
+            }
+        }
+        catch(Exception ex) {}
         return "View";
     }
 

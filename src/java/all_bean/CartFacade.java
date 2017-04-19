@@ -29,4 +29,11 @@ public class CartFacade extends AbstractFacade<Cart> {
         super(Cart.class);
     }
     
+    public Cart addItemToCart(int id, int itemId, int q){
+        Cart current = null;
+        current = (Cart) em.createNamedQuery("Cart.addItem").setParameter("customerId", id)
+        .setParameter("itemId", itemId).setParameter("qauntity", q);
+        return current;
+    }
+    
 }

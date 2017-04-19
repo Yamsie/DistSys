@@ -1,19 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package all_bean;
 
 import all.Shirts;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 
-/**
- *
- * @author paddy
- */
 @Stateless
 public class ShirtsFacade extends AbstractFacade<Shirts> {
 
@@ -29,4 +21,25 @@ public class ShirtsFacade extends AbstractFacade<Shirts> {
         super(Shirts.class);
     }
     
+    @Override
+    public Shirts find(Object id) throws NoResultException {
+        Shirts c = null;
+        c = (Shirts) em.createNamedQuery("Shirts.findByItemId")
+                .setParameter("itemId", id).getSingleResult();
+        return c;
+    }
+    
+    public Shirts getByName(String n) throws NoResultException {
+        Shirts current = null;
+        current = (Shirts) em.createNamedQuery("Shirts.findByName")
+                .setParameter("name", n).getSingleResult();
+        return current;
+    }
+    
+    public Shirts getAllByType(String t){
+        Shirts current = null;
+        current = (Shirts) getEntityManager().createNamedQuery("Shirts.findByType")
+                .setParameter("type", t).getSingleResult();
+        return current;
+    }
 }

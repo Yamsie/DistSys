@@ -159,3 +159,25 @@ add column PASSWORD varchar(255) not null default 'password';
 
 alter table app.customers
 add column USERNAME char(25) not null default 'username';
+
+
+CREATE TABLE APP.PRODUCTS(
+"ITEM_ID" INT NOT NULL DEFAULT 0,
+"NAME" VARCHAR(100),
+"SIZE" DOUBLE,
+"PRICE" DOUBLE, 
+"COLOUR" VARCHAR(50),
+"QUANTITY" INT
+);
+
+ALTER TABLE APP.PRODUCTS
+ADD PRIMARY KEY(ITEMID);
+
+INSERT INTO APP.PRODUCTS VALUES
+(1, 'Jumper', 34.6, 50.55, 'Red', 10),
+(2, 'Shirt', 34, 50.55, 'Black', 33),
+(3, 'brogues', 20.6, 50.55, 'White', 25),
+(4, 'Tshirt', 46, 50.55, 'Pink', 80),
+(5, 'Jumper', 34.6, 50.55, 'Red', 5),
+(6, 'Jacket', 34.6, 50.55, 'Green', 60)
+;
