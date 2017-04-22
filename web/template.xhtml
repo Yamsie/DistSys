@@ -6,13 +6,32 @@
 
     <h:head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <title><ui:insert name="title">Default Title</ui:insert></title>
+        <title>
+            <ui:insert name="title">Default Title</ui:insert>
+        </title>
         <h:outputStylesheet library="css" name="jsfcrud.css"/>
     </h:head>
 
     <h:body>
         <h1>
             <ui:insert name="title">Default Title</ui:insert>
+            <ui:insert name =" menu">
+                <h:form>
+                    <br />
+                    <h:commandLink action="#{cartController.prepareList}" value="View your cart"/>
+                     <br />
+                    <h:commandLink action="#{productsController.prepareList}" value="View All Products"/>
+                    <br />
+                    <h:link outcome="/customers/List" value="View All Customers"/>
+                    <br />
+                    <h:link outcome="/sales/List" value="View All Sales"/>
+                    <br />
+                    <h:link outcome="/searchCustomersPage" value="Search Customers"/>
+                    <br />
+                    <h:link outcome="/products/searchProductsPage" value="Search Products"/>
+                    <br />
+                </h:form>
+            </ui:insert>
         </h1>
         <p>
             <ui:insert name="body">Default Body</ui:insert>

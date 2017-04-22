@@ -5,6 +5,7 @@ import all.util.PaginationHelper;
 import all_bean.ProductsFacade;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.ResourceBundle;
 import javax.ejb.EJB;
 import javax.inject.Named;
@@ -94,9 +95,9 @@ public class ProductsController implements Serializable {
     public String addItem(){
         int cust = 12345;
         CartPK pk = new CartPK(cust, current.getItemId());
-        Cart cart = new Cart(pk, cust);
-        cartFacade.create(cart);
-        return "/cart/List";
+        Cart cart = new Cart(pk, cartQuantity);
+        cartFacade.create(cart); //being created and is written to DB but not appearing in cart list page?
+        return prepareList();
     }
     
     public String prepareCart(){
@@ -107,7 +108,8 @@ public class ProductsController implements Serializable {
 
     public String prepareList() {
         recreateModel();
-        return "List";
+        //recreatePagination();
+        return "/products/List";
     }
 
     public String prepareView() {
@@ -118,17 +120,22 @@ public class ProductsController implements Serializable {
 
     public String prepareSearchView() {
         current = null;
+        items = null;
+        String message = "";
         try{
             if(this.searchChoice.equals("name")){
-                current = (Products) ejbFacade.getByName(searchItem);
+                List pList = ejbFacade.getByName(searchItem);
+                items = new ListDataModel(pList);
+                message = "List";
             }
             else{
                 int id = Integer.parseInt(this.searchItem.trim());
-                current = getProducts(id);                 
+                current = getProducts(id);    
+                message = "View";
             }
         }
         catch(Exception ex) {}
-        return "View";
+        return message;
     }
 
 

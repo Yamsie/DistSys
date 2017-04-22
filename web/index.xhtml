@@ -3,22 +3,26 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html">
     <h:head>
-        <title>Facelet Title</title>
         <h:outputStylesheet name="css/jsfcrud.css"/>
     </h:head>
     <h:body>
+        
+        <h:form>
         <br />
-        <h:link outcome="/cart/List" value="Show All Cart Items"/>
+        <h:commandLink action="#{cartController.prepareList}" value="View your cart"/>
+         <br />
+        <h:commandLink action="#{productsController.prepareList}" value="View All Products"/>
         <br />
-        <h:link outcome="/customers/List" value="Show All Customers Items"/>
+        <h:link outcome="/customers/List" value="View All Customers"/>
         <br />
-        <h:link outcome="/sales/List" value="Show All Sales Items"/>
+        <h:link outcome="/sales/List" value="View All Sales"/>
         <br />
-        <h:link outcome="/transactions/List" value="Show All Transactions Items"/>
+        <h:link outcome="/searchCustomersPage" value="Search Customers"/>
         <br />
-        <h:link outcome="/searchCustomersPage" value="Search for Customers"/>
+        <h:link outcome="/products/searchProductsPage" value="Search Products"/>
         <br />
-        <h:link outcome="/products/List" value="Show All Products Items"/>
+        </h:form>
+        
     </h:body>
 </html>
 

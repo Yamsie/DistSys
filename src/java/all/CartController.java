@@ -5,6 +5,10 @@ import all.util.PaginationHelper;
 import all_bean.CartFacade;
 
 import java.io.Serializable;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Date;
+import java.util.List;
 import java.util.ResourceBundle;
 import javax.ejb.EJB;
 import javax.inject.Named;
@@ -27,6 +31,10 @@ public class CartController implements Serializable {
     private all_bean.CartFacade ejbFacade;
     private PaginationHelper pagination;
     private int selectedItemIndex;
+    @EJB
+    private all_bean.SalesFacade salesFacade;
+    @EJB
+    private all_bean.ProductsFacade productsFacade;
 
     public CartController() {
     }
@@ -61,16 +69,42 @@ public class CartController implements Serializable {
         }
         return pagination;
     }
+    
+    public String checkout() throws SQLException{
+        List cartItems = ejbFacade.checkoutCart(); 
+        String rMessage = "/sales/List";
+        //if no records, start at 1
+        int saleId = (salesFacade.getRecentSaleId()) + 1;
+        if(cartItems.size() == 0){
+            JsfUtil.addErrorMessage(ResourceBundle.getBundle("/Bundle").getString("NoItems"));
+            return rMessage = null;
+        }
+        for(int i=0; i < cartItems.size(); i++){
+            Cart c = (Cart) cartItems.get(i);
+            Products p = productsFacade.find((c.getCartPK().getItemId()));
+            if(p.getQuantity() - c.getQuantity() >= 0){
+                ejbFacade.remove(c); //remove entery from cart
+                //Date d = new Date();
+                salesFacade.create(new Sales(saleId, new Date(),  c.getCartPK().getItemId(), c.getCartPK().getCustomerId()));
+                saleId ++; //increase sale id
+                p.setQuantity(p.getQuantity() - c.getQuantity()); //decrement quantitiy in DB
+                productsFacade.edit(p);//write product quantity decrement to DB
+            }
+            else if(p.getQuantity() - c.getQuantity() < 0){
+                rMessage = null;
+                JsfUtil.addErrorMessage(ResourceBundle.getBundle("/Bundle").getString("NotEnoughStock"));
+            }
+        }
+        return rMessage;
+    }
 
     public String prepareList() {
         recreateModel();
-        return "List";
+        return "/cart/List";
     }
     
     public void addItem(){
         current = (Cart) getItems().getRowData();
-        
-        //ejbFacade.addItemToCart(current.getQuantity(), current.getCartPK());
     }
 
     public String prepareView() {
@@ -244,7 +278,12 @@ public class CartController implements Serializable {
                 throw new IllegalArgumentException("object " + object + " is of type " + object.getClass().getName() + "; expected type: " + Cart.class.getName());
             }
         }
-
     }
-
+    
+    public String cancelCart(){
+        int custId = 12345;
+        ejbFacade.removeAllFromCart(custId);
+        JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("AllCartDeleted"));
+        return prepareList();
+    }
 }

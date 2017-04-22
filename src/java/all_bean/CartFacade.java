@@ -1,19 +1,14 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package all_bean;
 
 import all.Cart;
+import all.CartPK;
+import java.sql.ResultSet;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
-/**
- *
- * @author paddy
- */
 @Stateless
 public class CartFacade extends AbstractFacade<Cart> {
 
@@ -32,8 +27,27 @@ public class CartFacade extends AbstractFacade<Cart> {
     public Cart addItemToCart(int id, int itemId, int q){
         Cart current = null;
         current = (Cart) em.createNamedQuery("Cart.addItem").setParameter("customerId", id)
-        .setParameter("itemId", itemId).setParameter("qauntity", q);
+        .setParameter("itemId", itemId).setParameter("quantity", q);
         return current;
     }
     
+    public List checkoutCart(){
+        CartPK pk = new CartPK();
+        pk.setCustomerId(12345);
+        Query q =  em.createNamedQuery("Cart.findByCustomerId")
+                .setParameter("customerId", pk.getCustomerId());
+        List cartItems = q.getResultList();
+        return cartItems;
+    }
+    
+    public void removeAllFromCart(int custId){
+        int i=0;
+        Query q =  em.createNamedQuery("Cart.findByCustomerId").setParameter("customerId", custId);
+        List cartItems = q.getResultList();
+        while(i < cartItems.size()){
+            Cart c = (Cart) cartItems.get(i);
+            em.remove(c);
+            i++;
+        }
+    }
 }

@@ -1,19 +1,12 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package all_bean;
 
+import all.CartPK;
 import all.Sales;
+import java.util.Date;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-/**
- *
- * @author paddy
- */
 @Stateless
 public class SalesFacade extends AbstractFacade<Sales> {
 
@@ -28,5 +21,19 @@ public class SalesFacade extends AbstractFacade<Sales> {
     public SalesFacade() {
         super(Sales.class);
     }
+
+    /*public Sales addToSales(int saleId, CartPK pk, int quantity){
+        Date date= new Date();
+        Sales sale = new Sales(saleId, date, pk.getItemId(), pk.getCustomerId());
+        return sale;        
+    }*/
     
+    public int getRecentSaleId(){
+        int newId = 0;
+        try{
+        newId = (int) em.createNamedQuery("Sales.getMaxId").getSingleResult();
+        }
+        catch(Exception ex){ }
+        return newId;
+    }
 }

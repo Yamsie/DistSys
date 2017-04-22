@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package all;
 
 import java.io.Serializable;
@@ -19,10 +14,6 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 
-/**
- *
- * @author paddy
- */
 @Entity
 @Table(name = "SALES")
 @XmlRootElement
@@ -31,7 +22,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Sales.findByDate", query = "SELECT s FROM Sales s WHERE s.date = :date")
     , @NamedQuery(name = "Sales.findBySaleId", query = "SELECT s FROM Sales s WHERE s.saleId = :saleId")
     , @NamedQuery(name = "Sales.findByItemId", query = "SELECT s FROM Sales s WHERE s.itemId = :itemId")
-    , @NamedQuery(name = "Sales.findByCustomerId", query = "SELECT s FROM Sales s WHERE s.customerId = :customerId")})
+    , @NamedQuery(name = "Sales.findByCustomerId", query = "SELECT s FROM Sales s WHERE s.customerId = :customerId")
+    , @NamedQuery(name = "Sales.getMaxId", query = "SELECT MAX(s.saleId) FROM Sales s")})
 public class Sales implements Serializable {
 
     private static final long serialVersionUID = 1L;

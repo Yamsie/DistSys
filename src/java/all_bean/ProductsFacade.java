@@ -1,9 +1,11 @@
 package all_bean;
 
 import all.Products;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 @Stateless
 public class ProductsFacade extends AbstractFacade<Products> {
@@ -20,10 +22,9 @@ public class ProductsFacade extends AbstractFacade<Products> {
         super(Products.class);
     }
     
-    public Products getByName(String n){
-        Products current = null;
-        current = (Products) getEntityManager().createNamedQuery("Products.findByName")
-                .setParameter("name", n).getSingleResult();
-        return current;
+    public List getByName(String n){
+        Query q = em.createNamedQuery("Products.findByName").setParameter("name", n);
+        List p = q.getResultList();
+        return p;
     }
 }

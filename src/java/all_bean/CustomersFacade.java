@@ -1,20 +1,13 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package all_bean;
 
 import all.Customers;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
-/**
- *
- * @author James
- */
 @Stateless
 public class CustomersFacade extends AbstractFacade<Customers> {
 
@@ -35,7 +28,6 @@ public class CustomersFacade extends AbstractFacade<Customers> {
         } catch (NoResultException e) {
             return null;
         }
-       
     }
 
     public CustomersFacade() {
@@ -43,17 +35,17 @@ public class CustomersFacade extends AbstractFacade<Customers> {
     }
     
     @Override
-    public Customers find(Object id) throws NoResultException {
+    public Customers find(Object id){
         Customers c = null;
         c = (Customers) em.createNamedQuery("Customers.findByCustomerId")
                 .setParameter("customerId", id).getSingleResult();
         return c;
     }
     
-    public Customers getByName(String n) throws NoResultException {
-        Customers current = null;
-        current = (Customers) em.createNamedQuery("Customers.findByName")
-                .setParameter("name", n).getSingleResult();
-        return current;
+    public List getByName(String n){
+        Query q = em.createNamedQuery("Customers.findByName")
+                .setParameter("name", n);
+        List namedItems = q.getResultList();
+        return namedItems;
     }
 }

@@ -5,6 +5,7 @@ import all.util.PaginationHelper;
 import all_bean.CustomersFacade;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.ResourceBundle;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
@@ -20,7 +21,6 @@ import javax.faces.model.SelectItem;
 import javax.persistence.NoResultException;
 
 @Named("customersController")
-@Stateful
 @SessionScoped
 public class CustomersController implements Serializable {
 
@@ -126,17 +126,22 @@ public class CustomersController implements Serializable {
 
     public String prepareSearchView() {
         current = null;
+        items = null;
+        String returnMessage = "";
         try{
             if(this.searchChoice.equals("name")){
-                current = (Customers) ejbFacade.getByName(searchItem);
+                List custList = ejbFacade.getByName(searchItem);
+                items = new ListDataModel(custList);
+                returnMessage = "customers/List";
             }
             else{
                 int id = Integer.parseInt(this.searchItem.trim());
-                current = getCustomers(id);                 
+                current = getCustomers(id); 
+                returnMessage = "customers/View";
             }
         }
         catch(Exception ex) {}
-        return "customers/View";
+        return returnMessage;
     }
     
     public String prepareCreate() {
