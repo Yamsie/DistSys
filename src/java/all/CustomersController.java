@@ -3,8 +3,11 @@ package all;
 import all.util.JsfUtil;
 import all.util.PaginationHelper;
 import all_bean.CustomersFacade;
-
 import java.io.Serializable;
+import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.ResourceBundle;
 import javax.ejb.EJB;
@@ -51,6 +54,10 @@ public class CustomersController implements Serializable {
         this.searchItem = searchItem;
     }
     
+    public Customers getCurrent() {
+        return this.current;
+    }
+    
     
     public CustomersController() {
     }
@@ -67,8 +74,11 @@ public class CustomersController implements Serializable {
         return password;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setPassword(String password) throws NoSuchAlgorithmException {
+        MessageDigest digest = MessageDigest.getInstance("SHA-256");
+        byte[] hash = digest.digest(password.getBytes(StandardCharsets.UTF_8));
+        String hashedString = String.format("%064x", new BigInteger(1, hash)); //new String(hash);
+        this.password = hashedString.toUpperCase();
     }
 
     public Customers getSelected() {
@@ -100,9 +110,17 @@ public class CustomersController implements Serializable {
         }
         return pagination;
     }
+    
+    public String logout() {
+        this.current = null;
+        this.username = null;
+        this.password = null;
+        
+        return "login.xhtml";
+    }
 
     public String checkCredentials() {
-        Customers c = getFacade().getByUsernameAndPassword(this.username, this.password);
+        Customers c = getFacade().getByUsernameAndPassword(this.username, new String(this.password));
         
         if (c != null) {
             current = c;

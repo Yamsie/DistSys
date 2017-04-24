@@ -1,27 +1,38 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
         <h:outputStylesheet name="css/jsfcrud.css"/>
     </h:head>
     <h:body>
         
-        <h:form>
-        <br />
-        <h:commandLink action="#{cartController.prepareList}" value="View your cart"/>
-         <br />
-        <h:commandLink action="#{productsController.prepareList}" value="View All Products"/>
-        <br />
-        <h:link outcome="/customers/List" value="View All Customers"/>
-        <br />
-        <h:link outcome="/sales/List" value="View All Sales"/>
-        <br />
-        <h:link outcome="/searchCustomersPage" value="Search Customers"/>
-        <br />
-        <h:link outcome="/products/searchProductsPage" value="Search Products"/>
-        <br />
-        </h:form>
+        <c:if test="#{!empty customersController.current}">
+            
+            <h:form>
+            <br />
+            <h:commandLink action="#{cartController.prepareList}" value="View your cart"/>
+            <br />
+            <h:commandLink action="#{productsController.prepareList}" value="View All Products"/>
+            <br />
+            <h:link outcome="/customers/List" value="View All Customers"/>
+            <br />
+            <h:link outcome="/sales/List" value="View All Sales"/>
+            <br />
+            <h:link outcome="/searchCustomersPage" value="Search Customers"/>
+            <br />
+            <h:link outcome="/products/searchProductsPage" value="Search Products"/>
+            <br />
+            <h:commandLink value="Logout" action="#{customersController.logout()}"/>
+            <br />
+            </h:form>
+        </c:if>
+        <c:if test="#{empty customersController.current}">
+            <h:link outcome="login.xhtml" value="Please Login"/>
+            <br />
+        </c:if>
         
     </h:body>
 </html>
