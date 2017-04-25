@@ -34,20 +34,6 @@ CREATE TABLE APP.SALES (
   Customer_id int NOT NULL
 );
 
-INSERT INTO APP.SALES (Date, Sale_id, Item_id, Customer_id) VALUES
-('2000-04-04', 2425, 5123455, 2),
-('2016-04-04', 2454, 4123455, 2),
-('2016-04-18', 2525, 4123455, 2),
-('2016-04-23', 3546, 4123455, 2),
-('2000-04-04', 4321, 0, 2),
-('2000-04-04', 4344, 5123455, 2),
-('2000-04-04', 4412, 3123454, 2),
-('2016-04-18', 4414, 3123454, 2),
-('2000-04-04', 4419, 5123455, 2),
-('2000-04-04', 4441, 1113456, 2),
-('2016-04-18', 5351, 1113456, 2),
-('2016-04-18', 6666, 4123455, 2);
-
 CREATE TABLE APP.SHIRTS (
   Item_id int NOT NULL,
   Type char(20) NOT NULL,
@@ -71,14 +57,6 @@ CREATE TABLE APP.SHOES(
 INSERT INTO APP.SHOES (Item_id, Type, Size, Price, Colour) VALUES
 (1113456, 'Brogues', 9, 69.5, 'Brown'),
 (1123456, 'Sandals', 10, 19.99, 'Black');
-
-CREATE TABLE APP.TRANSACTIONS (
-  Trans_id int NOT NULL,
-  Sale_id int DEFAULT NULL,
-  Return_id int DEFAULT NULL,
-  Item_id int NOT NULL,
-  Price int NOT NULL
-);
 
 CREATE TABLE APP.TROUSERS (
   Item_id int NOT NULL,

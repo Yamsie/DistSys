@@ -7,10 +7,8 @@
     <h:head>
         <h:outputStylesheet name="css/jsfcrud.css"/>
     </h:head>
-    <h:body>
-        
-        <c:if test="#{!empty customersController.current}">
-            
+    <h:body>  
+        <c:if test="#{!empty customersController.current}">    
             <h:form>
             <br />
             <h:commandLink action="#{cartController.prepareList}" value="View your cart"/>
@@ -20,8 +18,6 @@
             <h:link outcome="/customers/List" value="View All Customers"/>
             <br />
             <h:link outcome="/sales/List" value="View All Sales"/>
-            <br />
-            <h:link outcome="/searchCustomersPage" value="Search Customers"/>
             <br />
             <h:link outcome="/products/searchProductsPage" value="Search Products"/>
             <br />
@@ -33,7 +29,5 @@
             <h:link outcome="login.xhtml" value="Please Login"/>
             <br />
         </c:if>
-        
     </h:body>
 </html>
-
