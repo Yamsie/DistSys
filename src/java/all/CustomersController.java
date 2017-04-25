@@ -78,7 +78,7 @@ public class CustomersController implements Serializable {
         MessageDigest digest = MessageDigest.getInstance("SHA-256");
         byte[] hash = digest.digest(password.getBytes(StandardCharsets.UTF_8));
         String hashedString = String.format("%064x", new BigInteger(1, hash)); //new String(hash);
-        this.password = hashedString.toUpperCase();
+        this.password = hashedString;
     }
 
     public Customers getSelected() {
@@ -112,15 +112,15 @@ public class CustomersController implements Serializable {
     }
     
     public String logout() {
-        this.current = null;
         this.username = null;
         this.password = null;
+        this.current = null;
         
         return "login.xhtml";
     }
 
     public String checkCredentials() {
-        Customers c = getFacade().getByUsernameAndPassword(this.username, new String(this.password));
+        Customers c = getFacade().getByUsernameAndPassword(this.username, this.password);
         
         if (c != null) {
             current = c;

@@ -6,6 +6,10 @@
 package all;
 
 import java.io.Serializable;
+import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -29,7 +33,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Admins.findByAdminId", query = "SELECT a FROM Admins a WHERE a.adminId = :adminId")
     , @NamedQuery(name = "Admins.findByName", query = "SELECT a FROM Admins a WHERE a.name = :name")
     , @NamedQuery(name = "Admins.findByPassword", query = "SELECT a FROM Admins a WHERE a.password = :password")
-    , @NamedQuery(name = "Admins.findByEmail", query = "SELECT a FROM Admins a WHERE a.email = :email")})
+    , @NamedQuery(name = "Admins.findByEmail", query = "SELECT a FROM Admins a WHERE a.email = :email")
+    , @NamedQuery(name = "Admins.checkCredentials", query = "SELECT c FROM Admins c WHERE c.name = :name AND UPPER(c.password) = UPPER(:password)")})
 public class Admins implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -86,8 +91,11 @@ public class Admins implements Serializable {
         return password;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setPassword(String password) throws NoSuchAlgorithmException {
+        MessageDigest digest = MessageDigest.getInstance("SHA-256");
+        byte[] hash = digest.digest(password.getBytes(StandardCharsets.UTF_8));
+        String hashedString = String.format("%064x", new BigInteger(1, hash)); //new String(hash);
+        this.password = hashedString;
     }
 
     public String getEmail() {

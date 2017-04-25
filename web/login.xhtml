@@ -1,22 +1,33 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <h:head>
         <title>Login</title>
         <h:outputStylesheet name="css/jsfcrud.css"/>
     </h:head>
     <h:body>
+        Customer Login
+    <br />
         <h:form>
-            <h:outputText value="Username: " />
-            <h:inputText id="username" value="#{customersController.username}" /><br />
-            
-            <h:outputText value="Password: " />
-            <h:inputSecret id="password" value="#{customersController.password}" /><br />
-            
-            <h:outputText value="#{customersController.password}" />
-            
-            <h:commandButton id="submit" action="#{customersController.checkCredentials}" />
+            <c:if test="#{!empty customersController.current}">
+                <h:commandLink action="#{customersController.logout()}" value="Please log out to access this page"/>
+            </c:if>
+            <c:if test="#{!empty adminsController.current}">
+                Customer access only
+            </c:if>
+            <c:if test="#{(empty customersController.current) &amp;&amp; (empty adminsController.current)}">
+                <h:outputText value="Username: " />
+                <h:inputText id="username" value="#{customersController.username}" /><br />
+
+                <h:outputText value="Password: " />
+                <h:inputSecret id="password" value="#{customersController.password}" /><br />
+
+                <h:outputText value="#{customersController.password}" />
+
+                <h:commandButton id="submit" action="#{customersController.checkCredentials}" />
+            </c:if>
         </h:form>
     </h:body>
 </html>
