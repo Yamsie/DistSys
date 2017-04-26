@@ -25,6 +25,8 @@
                     <h:inputText id="email" value="#{customersController.selected.email}" title="#{bundle.EditCustomersTitle_email}" />
                     <h:outputLabel value="#{bundle.EditCustomersLabel_mobile}" for="mobile" />
                     <h:inputText id="mobile" value="#{customersController.selected.mobile}" title="#{bundle.EditCustomersTitle_mobile}" />
+                    <h:outputLabel value="#{bundle.EditCustomersLabel_message}" for="message" />
+                    <h:inputText id="message" value="#{customersController.selected.message}" title="#{bundle.EditCustomersTitle_message}" />
                 </h:panelGrid>
                 <h:commandLink action="#{customersController.update}" value="#{bundle.EditCustomersSaveLink}"/>
                 <br />

@@ -10,6 +10,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.ResourceBundle;
+import javax.annotation.Resource;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
 import javax.inject.Named;
@@ -21,11 +22,22 @@ import javax.faces.convert.FacesConverter;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
+import javax.inject.Inject;
+import javax.jms.JMSConnectionFactory;
+import javax.jms.JMSContext;
+import javax.jms.Queue;
 import javax.persistence.NoResultException;
 
 @Named("customersController")
 @SessionScoped
 public class CustomersController implements Serializable {
+
+	@Resource(mappedName = "jms/Logging")
+	private Queue logging;
+
+	@Inject
+	@JMSConnectionFactory("java:comp/DefaultJMSConnectionFactory")
+	private JMSContext context;
 
     private Customers current;
     private DataModel items = null;
@@ -121,7 +133,9 @@ public class CustomersController implements Serializable {
 
     public String checkCredentials() {
         Customers c = getFacade().getByUsernameAndPassword(this.username, this.password);
-        
+	
+       	sendJMSMessageToLogging("Attemped Login");
+	
         if (c != null) {
             current = c;
             return "index.xhtml";
@@ -320,5 +334,9 @@ public class CustomersController implements Serializable {
         }
 
     }
+
+	private void sendJMSMessageToLogging(String messageData) {
+		context.createProducer().send(logging, messageData);
+	}
 
 }

@@ -31,28 +31,6 @@
                 <br />
             </h:form>
         </c:if>
-        <c:if test="#{(!empty customersController.current) &amp;&amp; (empty adminsController.current)}">
-            Currently logged in as #{customersController.username}
-            <h:form>
-                <br />
-                <h:commandLink action="#{cartController.prepareList}" value="View your cart"/>
-                <br />
-                <h:commandLink action="#{productsController.prepareList}" value="View All Products"/>
-                <br />
-                <h:link outcome="/customers/List" value="View All Customers"/>
-                <br />
-                <h:link outcome="/sales/List" value="View All Sales"/>
-                <br />
-                <h:link outcome="/searchCustomersPage" value="Search Customers"/>
-                <br />
-                <h:link outcome="/products/searchProductsPage" value="Search Products"/>
-                <br />
-                <h:link outcome="/profile.xhtml" value="See Profile"/>
-                <br />
-                <h:commandLink value="Logout" action="#{customersController.logout()}"/>
-                <br />
-            </h:form>
-        </c:if>
         <c:if test="#{empty customersController.current}">
                 Please login as a customer
             <br />
