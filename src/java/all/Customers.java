@@ -1,6 +1,10 @@
 package all;
 
 import java.io.Serializable;
+import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -26,6 +30,10 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Customers.findByUsername", query = "SELECT c FROM Customers c WHERE c.username = :username")
     , @NamedQuery(name = "Customers.checkCredentials", query = "SELECT c FROM Customers c WHERE c.username = :username AND UPPER(c.password) = UPPER(:password)")})
 public class Customers implements Serializable {
+
+    @Size(max = 500)
+    @Column(name = "MESSAGE")
+    private String message;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -114,11 +122,14 @@ public class Customers implements Serializable {
     }
 
     public String getPassword() {
-        return password;
+    	return this.password;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setPassword(String password) throws NoSuchAlgorithmException  {
+	MessageDigest digest = MessageDigest.getInstance("SHA-256");
+        byte[] hash = digest.digest(password.getBytes(StandardCharsets.UTF_8));
+        String hashedString = String.format("%064x", new BigInteger(1, hash)); //new String(hash);
+	this.password = hashedString;
     }
 
     public String getUsername() {
@@ -152,6 +163,14 @@ public class Customers implements Serializable {
     @Override
     public String toString() {
         return "all.Customers[ customerId=" + customerId + " ]";
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
     
 }
