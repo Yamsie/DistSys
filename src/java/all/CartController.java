@@ -10,6 +10,7 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
+import javax.annotation.Resource;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
@@ -20,10 +21,21 @@ import javax.faces.convert.FacesConverter;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
+import javax.inject.Inject;
+import javax.jms.JMSConnectionFactory;
+import javax.jms.JMSContext;
+import javax.jms.Queue;
 
 @Named("cartController")
 @SessionScoped
 public class CartController implements Serializable {
+
+	@Resource(mappedName = "jms/Logging")
+	private Queue logging;
+
+	@Inject
+	@JMSConnectionFactory("java:comp/DefaultJMSConnectionFactory")
+	private JMSContext context;
 
     private Cart current;
     private DataModel items = null;
@@ -73,6 +85,7 @@ public class CartController implements Serializable {
     public String checkout() throws SQLException{
         List cartItems = ejbFacade.checkoutCart(); 
         String rMessage = "/sales/List";
+	Cart c = null;
         //if no records, start at 1
         int saleId = (salesFacade.getRecentSaleId()) + 1;
         if(cartItems.size() == 0){
@@ -80,7 +93,7 @@ public class CartController implements Serializable {
             return rMessage = null;
         }
         for(int i=0; i < cartItems.size(); i++){
-            Cart c = (Cart) cartItems.get(i);
+            c = (Cart) cartItems.get(i);
             Products p = productsFacade.find((c.getCartPK().getItemId()));
             if(p.getQuantity() - c.getQuantity() >= 0){
                 ejbFacade.remove(c); //remove entery from cart
@@ -95,6 +108,7 @@ public class CartController implements Serializable {
                 JsfUtil.addErrorMessage(ResourceBundle.getBundle("/Bundle").getString("NotEnoughStock"));
             }
         }
+	sendJMSMessageToLogging(c.getCartPK().getCustomerId() + " has confirmed their order.");
         return rMessage;
     }
 
@@ -284,6 +298,11 @@ public class CartController implements Serializable {
         int custId = 12345;
         ejbFacade.removeAllFromCart(custId);
         JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("AllCartDeleted"));
+		sendJMSMessageToLogging(custId + " cancelled their order.");
         return prepareList();
     }
+
+	private void sendJMSMessageToLogging(String messageData) {
+		context.createProducer().send(logging, messageData);
+	}
 }
