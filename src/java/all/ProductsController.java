@@ -7,6 +7,7 @@ import all_bean.ProductsFacade;
 import java.io.Serializable;
 import java.util.List;
 import java.util.ResourceBundle;
+import javax.annotation.Resource;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
@@ -17,10 +18,21 @@ import javax.faces.convert.FacesConverter;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
+import javax.inject.Inject;
+import javax.jms.JMSConnectionFactory;
+import javax.jms.JMSContext;
+import javax.jms.Queue;
 
 @Named("productsController")
 @SessionScoped
 public class ProductsController implements Serializable {
+
+    @Resource(mappedName = "jms/Logging")
+    private Queue logging;
+
+    @Inject
+    @JMSConnectionFactory("java:comp/DefaultJMSConnectionFactory")
+    private JMSContext context;
 
     private Products current;
     private DataModel items = null;
@@ -140,6 +152,7 @@ public class ProductsController implements Serializable {
 
 
     public String prepareCreate() {
+	
         current = new Products();
         selectedItemIndex = -1;
         return "Create";
@@ -149,6 +162,7 @@ public class ProductsController implements Serializable {
         try {
             getFacade().create(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("ProductsCreated"));
+	    sendJMSMessageToLogging("Admin added a new product.");
             return prepareCreate();
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
@@ -179,6 +193,7 @@ public class ProductsController implements Serializable {
         performDestroy();
         recreatePagination();
         recreateModel();
+	sendJMSMessageToLogging("Admin deleted a Product from the store");
         return "List";
     }
 
@@ -296,6 +311,10 @@ public class ProductsController implements Serializable {
             }
         }
 
+    }
+
+    private void sendJMSMessageToLogging(String messageData) {
+        context.createProducer().send(logging, messageData);
     }
 
 }

@@ -10,6 +10,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.ResourceBundle;
+import javax.annotation.Resource;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
 import javax.inject.Named;
@@ -21,11 +22,11 @@ import javax.faces.convert.FacesConverter;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
-import javax.persistence.NoResultException;
 
 @Named("customersController")
 @SessionScoped
 public class CustomersController implements Serializable {
+
 
     private Customers current;
     private DataModel items = null;
@@ -121,7 +122,7 @@ public class CustomersController implements Serializable {
 
     public String checkCredentials() {
         Customers c = getFacade().getByUsernameAndPassword(this.username, this.password);
-        
+	
         if (c != null) {
             current = c;
             return "index.xhtml";
