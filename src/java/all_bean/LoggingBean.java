@@ -15,10 +15,8 @@ import javax.jms.Message;
 import javax.jms.MessageListener;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
-import javax.faces.context.FacesContext;
 import javax.jms.JMSException;
 import javax.jms.TextMessage;
-import javax.servlet.ServletContext;
 
 
 @MessageDriven(activationConfig = {
@@ -37,14 +35,12 @@ public class LoggingBean implements MessageListener {
 
 	public LoggingBean() throws IOException {
 		
-		String fullPath = FacesContext.getCurrentInstance().getExternalContext().getRealPath("");
-//		
-		System.out.println("\n\n\n\n\n\n\n" + getClass().getResourceAsStream("/"));
-//		File file = new File(fullPath); 
-//		if(!file.exists()){
-//			file.createNewFile();
-//		}
-		this.fileHandler = new FileHandler("/home/will/logfile.txt", true);
+		File file = new File("logfile.txt");
+		
+		if(!file.exists()){
+			file.createNewFile();
+		}
+		this.fileHandler = new FileHandler("logfile.txt", true);
 		
 	}
 	
@@ -54,7 +50,6 @@ public class LoggingBean implements MessageListener {
 		TextMessage textMessage;
 		textMessage = (TextMessage) message;
 		
-		System.out.println("\n\n\n\n\n\n\n" + getClass().getResourceAsStream("/resources/styles/"));
 		SimpleFormatter sf = new SimpleFormatter();
 		this.fileHandler.setFormatter(sf);
 			
