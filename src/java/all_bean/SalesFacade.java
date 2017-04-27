@@ -40,7 +40,7 @@ public class SalesFacade extends AbstractFacade<Sales> {
     }
     
     public List getByCustId(int custId){
-        Query q = em.createNamedQuery("Sales.findByCustomerId").setParameter("CustomerId", custId);
+        Query q = em.createNamedQuery("Sales.findByCustomerId").setParameter("customerId", custId);
         List l = q.getResultList();
         return l;
     }

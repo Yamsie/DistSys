@@ -19,6 +19,8 @@
                     <f:selectItem itemValue = "name" itemLabel = "Search Names" />
                 </h:selectOneListbox>
                 <h:commandButton value ="Search" action = "#{productsController.prepareSearchView}"/>
+                <br />
+                <h:link outcome="/index" value="Index"/>
             </h:form>
         </ui:define>
     </ui:composition>

@@ -17,6 +17,8 @@
             <h:outputText value ="Enter a quantity:"/>
             <h:inputText value ="#{productsController.cartQuantity}"/>
             <h:commandButton value = "Add to Cart" action = "#{productsController.addItem}"/>
+            <br/>
+            <h:link outcome="/index" value="Index"/>
         </h:form>
     </ui:define>
     </ui:composition>

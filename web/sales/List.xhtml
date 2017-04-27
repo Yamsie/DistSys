@@ -46,20 +46,8 @@
                             </f:facet>
                             <h:outputText value="#{item.customerId}"/>
                         </h:column>
-                        <h:column>
-                            <f:facet name="header">
-                                <h:outputText value="&nbsp;"/>
-                            </f:facet>
-                            <h:commandLink action="#{salesController.prepareView}" value="#{bundle.ListSalesViewLink}"/>
-                            <h:outputText value=" "/>
-                            <h:commandLink action="#{salesController.prepareEdit}" value="#{bundle.ListSalesEditLink}"/>
-                            <h:outputText value=" "/>
-                            <h:commandLink action="#{salesController.destroy}" value="#{bundle.ListSalesDestroyLink}"/>
-                        </h:column>
                     </h:dataTable>
                 </h:panelGroup>
-                <br />
-                <h:commandLink action="#{salesController.prepareCreate}" value="#{bundle.ListSalesCreateLink}"/>
                 <br />
                 <br />
                 <h:link outcome="/index" value="#{bundle.ListSalesIndexLink}"/>

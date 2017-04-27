@@ -64,10 +64,7 @@ public class SalesController implements Serializable {
 
     public String prepareList() {
         recreateModel();
-        int custId = CustomersController.getCustomersInstance().getCustomerId();
-        List list = ejbFacade.getByCustId(custId);
-        items = new ListDataModel(list);
-        return "List";
+        return "/sales/List";
     }
 
     public String prepareView() {
@@ -164,7 +161,10 @@ public class SalesController implements Serializable {
     }
 
     private void recreateModel() {
-        items = null;
+        //items = null;
+        int custId = CustomersController.getCustomersInstance().getCustomerId();
+        List list = ejbFacade.getByCustId(custId);
+        items = new ListDataModel(list);
     }
 
     private void recreatePagination() {

@@ -16,7 +16,7 @@
             <h:form>
                 <h:panelGrid columns="2">
                     <h:outputLabel value="#{bundle.EditCustomersLabel_customerId}" for="customerId" />
-                    <h:inputText id="customerId" value="#{customersController.selected.customerId}" title="#{bundle.EditCustomersTitle_customerId}" required="true" requiredMessage="#{bundle.EditCustomersRequiredMessage_customerId}"/>
+                    <h:outputText id="customerId" value="#{customersController.selected.customerId}" title="#{bundle.EditCustomersTitle_customerId}"/>
                     <h:outputLabel value="#{bundle.EditCustomersLabel_name}" for="name" />
                     <h:inputText id="name" value="#{customersController.selected.name}" title="#{bundle.EditCustomersTitle_name}" required="true" requiredMessage="#{bundle.EditCustomersRequiredMessage_name}"/>
                     <h:outputLabel value="#{bundle.EditCustomersLabel_address}" for="Address" />
@@ -30,7 +30,7 @@
                 </h:panelGrid>
                 <h:commandLink action="#{customersController.update}" value="#{bundle.EditCustomersSaveLink}"/>
                 <br />
-                <h:link outcome="profile" value="#{bundle.EditCustomersViewLink}"/>
+                <h:link outcome="/profile" value="#{bundle.EditCustomersViewLink}"/>
                 <br />
                 <br />
                 <h:link outcome="/index" value="#{bundle.EditCustomersIndexLink}" />

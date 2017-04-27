@@ -24,11 +24,15 @@
                     <br />
                     <h:link outcome="/customers/List" value="View All Customers"/>
                     <br />
-                    <h:link outcome="/sales/List" value="View All Sales"/>
+                    <h:commandLink action="#{salesController.prepareList}" value="View Sales"/>
                     <br />
                     <h:link outcome="/searchCustomersPage" value="Search Customers"/>
                     <br />
                     <h:link outcome="/products/searchProductsPage" value="Search Products"/>
+                    <br />
+                    <h:link outcome="/profile.xhtml" value="See Profile"/>
+                    <br />
+                    <h:commandLink value="Logout" action="#{customersController.logout()}"/>
                     <br />
                 </h:form>
             </ui:insert>

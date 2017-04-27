@@ -26,14 +26,12 @@
                 <h:commandLink action="#{cartController.destroyAndView}" value="#{bundle.ViewCartDestroyLink}"/>
                 <br />
                 <br />
-                <h:link outcome="Edit" value="#{bundle.ViewCartEditLink}"/>
+                <h:link outcome="Edit" value="Edit"/>
                 <br />
-                <h:commandLink action="#{cartController.prepareCreate}" value="#{bundle.ViewCartCreateLink}" />
-                <br />
-                <h:commandLink action="#{cartController.prepareList}" value="#{bundle.ViewCartShowAllLink}"/>
+                <h:commandLink action="#{cartController.prepareList}" value="Show All"/>
                 <br />
                 <br />
-                <h:link outcome="/index" value="#{bundle.ViewCartIndexLink}"/>
+                <h:link outcome="/index" value="Index"/>
 
             </h:form>
         </ui:define>

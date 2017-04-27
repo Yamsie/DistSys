@@ -34,11 +34,9 @@ public class CustomersFacade extends AbstractFacade<Customers> {
         super(Customers.class);
     }
     
-    @Override
-    public Customers find(Object id){
-        Customers c = null;
-        c = (Customers) em.createNamedQuery("Customers.findByCustomerId")
-                .setParameter("customerId", id).getSingleResult();
+
+    public List findCust(Object id){
+        List c = em.createNamedQuery("Customers.findByCustomerId").setParameter("customerId", id).getResultList();
         return c;
     }
     

@@ -51,11 +51,9 @@
                     </h:dataTable>
                 </h:panelGroup>
                 <br />
-                <h:commandButton action="#{cartController.checkout}" value="#{bundle.cartCheckoutLink}"/>
+                <h:commandButton action="#{cartController.checkout}" value="Checkout Cart"/>
                 <br />
-                <h:commandButton action="#{cartController.cancelCart}" value="#{bundle.cancelCart}"/>
-                <br />
-                <h:commandLink action="#{cartController.prepareCreate}" value="#{bundle.ListCartCreateLink}"/>
+                <h:commandButton action="#{cartController.cancelCart}" value="Cancel Cart"/>
                 <br />
                 <br />
                 <h:link outcome="/index" value="#{bundle.ListCartIndexLink}"/>

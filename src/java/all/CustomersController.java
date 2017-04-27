@@ -10,9 +10,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.ResourceBundle;
-import javax.annotation.Resource;
 import javax.ejb.EJB;
-import javax.ejb.Stateful;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.component.UIComponent;
@@ -153,7 +151,7 @@ public class CustomersController implements Serializable {
     public String prepareSearchView() {
         current = null;
         items = null;
-        String returnMessage = "";
+        String returnMessage = null;
         try{
             if(this.searchChoice.equals("name")){
                 List custList = ejbFacade.getByName(searchItem);
@@ -162,7 +160,8 @@ public class CustomersController implements Serializable {
             }
             else{
                 int id = Integer.parseInt(this.searchItem.trim());
-                current = getCustomers(id); 
+                List list = ejbFacade.findCust(id);
+                items = new ListDataModel(list);
                 returnMessage = "customers/View";
             }
         }
@@ -197,7 +196,7 @@ public class CustomersController implements Serializable {
         try {
             getFacade().edit(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("CustomersUpdated"));
-            return "View";
+            return "/profile";
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
             return null;
