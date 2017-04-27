@@ -28,7 +28,7 @@ import javax.faces.model.SelectItem;
 public class CustomersController implements Serializable {
 
 
-    private Customers current;
+    private static Customers current;
     private DataModel items = null;
     @EJB
     private all_bean.CustomersFacade ejbFacade;
@@ -56,9 +56,16 @@ public class CustomersController implements Serializable {
     }
     
     public Customers getCurrent() {
-        return this.current;
+        return current;
     }
     
+    public void setCurrent(Customers customers) {
+        current = customers;
+    }
+    
+    public static Customers getCustomersInstance() {
+        return current;
+    }
     
     public CustomersController() {
     }

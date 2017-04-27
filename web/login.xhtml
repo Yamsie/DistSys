@@ -24,8 +24,6 @@
                 <h:outputText value="Password: " />
                 <h:inputSecret id="password" value="#{customersController.password}" /><br />
 
-                <h:outputText value="#{customersController.password}" />
-
                 <h:commandButton id="submit" action="#{customersController.checkCredentials}" value="Submit" />
             </c:if>
         </h:form>
