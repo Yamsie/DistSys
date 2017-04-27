@@ -105,11 +105,10 @@ public class ProductsController implements Serializable {
     }
     
     public String addItem(){
-        //int cust = 12345;
         int cust = CustomersController.getCustomersInstance().getCustomerId();
         CartPK pk = new CartPK(cust, current.getItemId());
         Cart cart = new Cart(pk, cartQuantity);
-        cartFacade.create(cart); //being created and is written to DB but not appearing in cart list page?
+        cartFacade.create(cart); //being created and is written to DB
         return prepareList();
     }
     
@@ -121,7 +120,6 @@ public class ProductsController implements Serializable {
 
     public String prepareList() {
         recreateModel();
-        //recreatePagination();
         return "/products/List";
     }
 
@@ -147,7 +145,9 @@ public class ProductsController implements Serializable {
                 message = "View";
             }
         }
-        catch(Exception ex) {}
+        catch(Exception ex) {
+            JsfUtil.addErrorMessage(ResourceBundle.getBundle("/Bundle").getString("IdNumberError"));
+        }
         return message;
     }
 

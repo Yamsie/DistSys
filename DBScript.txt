@@ -6,6 +6,8 @@ CREATE TABLE APP.CUSTOMERS (
   address char(100) NOT NULL,
   email char(20) DEFAULT NULL,
   mobile char(20) DEFAULT NULL
+  PASSWORD varchar(255) not null default 'password';
+  USERNAME char(25) not null default 'username';
 ) ;
 
 INSERT INTO APP.CUSTOMERS (Customer_id, Name, Address, Email, Mobile) VALUES
@@ -14,18 +16,6 @@ INSERT INTO APP.CUSTOMERS (Customer_id, Name, Address, Email, Mobile) VALUES
 (3, 'Will Flaherty', 'Brookfield, Castletroy, Limerick', 'dhbvfrd@gmail.com', 0),
 (4, 'Paddy Cumiskey', 'Raheen, Limerick', 'blah@gmail.com', 2147483647);
 
-CREATE TABLE APP.JUMPERS (
-  Item_id int NOT NULL,
-  Type char(20) NOT NULL,
-  Size double NOT NULL,
-  Price double NOT NULL,
-  Colour char(20) DEFAULT NULL
-) ;
-
-INSERT INTO APP.JUMPERS(Item_id, Type, Size, Price, Colour) VALUES
-(4123455, 'Wool', 32, 50, 'Light Blue'),
-(4123456, 'Wool', 30, 50, 'Light Blue'),
-(4123457, 'Wool', 34, 50, 'Light Blue');
 
 CREATE TABLE APP.SALES (
   Date date NOT NULL,
@@ -33,47 +23,6 @@ CREATE TABLE APP.SALES (
   Item_id int NOT NULL,
   Customer_id int NOT NULL
 );
-
-CREATE TABLE APP.SHIRTS (
-  Item_id int NOT NULL,
-  Type char(20) NOT NULL,
-  Size double NOT NULL,
-  Price double NOT NULL,
-  Colour char(20) DEFAULT NULL
-) ;
-
-INSERT INTO APP.SHIRTS (Item_id, Type, Size, Price, Colour) VALUES
-(5123455, 'Short sleeve', 30, 14.5, 'Blue check'),
-(5123456, 'Dress shirt', 34, 20, 'White');
-
-CREATE TABLE APP.SHOES(
-  Item_id int NOT NULL,
-  Type char(20) NOT NULL,
-  Size double NOT NULL,
-  Price double NOT NULL,
-  Colour char(20) DEFAULT NULL
-);
-
-INSERT INTO APP.SHOES (Item_id, Type, Size, Price, Colour) VALUES
-(1113456, 'Brogues', 9, 69.5, 'Brown'),
-(1123456, 'Sandals', 10, 19.99, 'Black');
-
-CREATE TABLE APP.TROUSERS (
-  Item_id int NOT NULL,
-  Type char(20) NOT NULL,
-  Size double NOT NULL,
-  Price double NOT NULL,
-  Colour char(20) DEFAULT NULL
-);
-
-INSERT INTO APP.TROUSERS (Item_id, Type, Size, Price, Colour) VALUES
-(3123454, 'Chinos', 32, 44.99, 'Beige'),
-(3123456, 'Tracksuit', 34, 24.99, 'Navy');
-
-CREATE TABLE APP.LOGIN (
-user_id int NOT NULL,
-password int NOT NULL
-) ;
 
 CREATE TABLE APP.CART (
 customer_id int NOT NULL,
@@ -84,60 +33,11 @@ quantity int NOT NULL
 ALTER TABLE APP.CUSTOMERS
   ADD PRIMARY KEY (Customer_id);
 
-ALTER TABLE APP.JUMPERS
-  ADD PRIMARY KEY (Item_id);
-
 ALTER TABLE APP.SALES
   ADD PRIMARY KEY (Sale_id);
 
-ALTER TABLE APP.SHIRTS
-  ADD PRIMARY KEY (Item_id);
-
-ALTER TABLE APP.SHOES
-  ADD PRIMARY KEY (Item_id);
-
-ALTER TABLE APP.TRANSACTIONS
-  ADD PRIMARY KEY (Trans_id);
-
-ALTER TABLE APP.TROUSERS
-  ADD PRIMARY KEY (Item_id);
-
 ALTER TABLE APP.CART
   ADD PRIMARY KEY (customer_id, item_id);
-
-ALTER TABLE APP.LOGIN
-  ADD PRIMARY KEY (user_id);
-
-CREATE TABLE APP.LOGGING_FACILITY (
-LOG_ID INT NOT NULL,
-USER_ID INT NOT NULL,
-LOG_TYPE CHAR NOT NULL,
-ORDER_ID INT DEFAULT NULL,
-ITEM_ID INT DEFAULT NULL
-);
-
-ALTER TABLE APP.LOGGING_FACILITY
-  ADD PRIMARY KEY (log_id);
-
-ALTER TABLE APP.TROUSERS
-add column QUANTITY int not null default 0;
-
-ALTER TABLE APP.SHOES
-add column QUANTITY int not null default 0;
-
-ALTER TABLE APP.JUMPERS
-add column QUANTITY int not null default 0;
-
-ALTER TABLE APP.SHIRTS
-add column QUANTITY int not null default 0;
-
-
-alter table app.customers
-add column PASSWORD varchar(255) not null default 'password';
-
-alter table app.customers
-add column USERNAME char(25) not null default 'username';
-
 
 CREATE TABLE APP.PRODUCTS(
 "ITEM_ID" INT NOT NULL DEFAULT 0,
@@ -159,3 +59,11 @@ INSERT INTO APP.PRODUCTS VALUES
 (5, 'Jumper', 34.6, 50.55, 'Red', 5),
 (6, 'Jacket', 34.6, 50.55, 'Green', 60)
 ;
+
+CREATE TABLE APP.ADMINS (
+"ADMIN_ID" INTEGER NOT NULL, 
+"NAME" CHAR(50) NOT NULL, 
+"PASSWORD" VARCHAR(255) NOT NULL, 
+"EMAIL" CHAR(20) NOT NULL, 
+PRIMARY KEY (ADMIN_ID)
+);

@@ -139,7 +139,7 @@ public class CustomersController implements Serializable {
     
     public String prepareList() {
         recreateModel();
-        return "List";
+        return "/customers/List";
     }
 
     public String prepareView() {
@@ -165,7 +165,9 @@ public class CustomersController implements Serializable {
                 returnMessage = "customers/View";
             }
         }
-        catch(Exception ex) {}
+        catch(Exception ex) {
+            JsfUtil.addErrorMessage(ResourceBundle.getBundle("/Bundle").getString("IdNumberError"));
+        }
         return returnMessage;
     }
     
@@ -257,7 +259,9 @@ public class CustomersController implements Serializable {
     }
 
     private void recreateModel() {
-        items = null;
+        //items = null;
+        List custList = ejbFacade.getOtherCustomers(current.getCustomerId());
+        items = new ListDataModel(custList);
     }
 
     private void recreatePagination() {

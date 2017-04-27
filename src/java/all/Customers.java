@@ -28,7 +28,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Customers.findByAddress", query = "SELECT c FROM Customers c WHERE c.address = :address")
     , @NamedQuery(name = "Customers.findByPassword", query = "SELECT c FROM Customers c WHERE c.password = :password")
     , @NamedQuery(name = "Customers.findByUsername", query = "SELECT c FROM Customers c WHERE c.username = :username")
-    , @NamedQuery(name = "Customers.checkCredentials", query = "SELECT c FROM Customers c WHERE c.username = :username AND UPPER(c.password) = UPPER(:password)")})
+    , @NamedQuery(name = "Customers.checkCredentials", query = "SELECT c FROM Customers c WHERE c.username = :username AND UPPER(c.password) = UPPER(:password)")
+    , @NamedQuery(name = "Customers.findAllOthers", query = "SELECT c FROM Customers c WHERE c.customerId != :customerId")})
 public class Customers implements Serializable {
 
     @Size(max = 500)

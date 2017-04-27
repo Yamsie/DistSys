@@ -46,4 +46,10 @@ public class CustomersFacade extends AbstractFacade<Customers> {
         List namedItems = q.getResultList();
         return namedItems;
     }
+    
+    public List getOtherCustomers(int id){
+        Query q = em.createNamedQuery("Customers.findAllOthers").setParameter("customerId", id);
+        List custList = q.getResultList();
+        return custList;    
+    }
 }
