@@ -2,7 +2,7 @@ package all_bean;
 
 import all.Cart;
 import all.CartPK;
-import java.sql.ResultSet;
+import all.CustomersController;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -33,7 +33,8 @@ public class CartFacade extends AbstractFacade<Cart> {
     
     public List checkoutCart(){
         CartPK pk = new CartPK();
-        pk.setCustomerId(12345);
+        int cust = CustomersController.getCustomersInstance().getCustomerId();
+        pk.setCustomerId(cust);
         Query q =  em.createNamedQuery("Cart.findByCustomerId")
                 .setParameter("customerId", pk.getCustomerId());
         List cartItems = q.getResultList();
@@ -41,6 +42,7 @@ public class CartFacade extends AbstractFacade<Cart> {
     }
     
     public void removeAllFromCart(int custId){
+        //int custId = CustomersController.getCustomersInstance().getCustomerId();
         int i=0;
         Query q =  em.createNamedQuery("Cart.findByCustomerId").setParameter("customerId", custId);
         List cartItems = q.getResultList();

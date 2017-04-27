@@ -84,32 +84,30 @@ public class CartController implements Serializable {
     
     public String checkout() throws SQLException{
         List cartItems = ejbFacade.checkoutCart(); 
-        String rMessage = "/sales/List";
+        //String rMessage = "/sales/List";
 	Cart c = null;
-        //if no records, start at 1
-        int saleId = (salesFacade.getRecentSaleId()) + 1;
-        if(cartItems.size() == 0){
+        int saleId = (salesFacade.getRecentSaleId());
+        if(cartItems.isEmpty()){
             JsfUtil.addErrorMessage(ResourceBundle.getBundle("/Bundle").getString("NoItems"));
-            return rMessage = null;
+            //return rMessage = null;
         }
         for(int i=0; i < cartItems.size(); i++){
+            saleId++;
             c = (Cart) cartItems.get(i);
             Products p = productsFacade.find((c.getCartPK().getItemId()));
             if(p.getQuantity() - c.getQuantity() >= 0){
-                ejbFacade.remove(c); //remove entery from cart
-                //Date d = new Date();
+                ejbFacade.remove(c); //remove entry from cart
                 salesFacade.create(new Sales(saleId, new Date(),  c.getCartPK().getItemId(), c.getCartPK().getCustomerId()));
-                saleId ++; //increase sale id
-                p.setQuantity(p.getQuantity() - c.getQuantity()); //decrement quantitiy in DB
+                p.setQuantity(p.getQuantity() - c.getQuantity());
                 productsFacade.edit(p);//write product quantity decrement to DB
             }
             else if(p.getQuantity() - c.getQuantity() < 0){
-                rMessage = null;
+                //rMessage = null;
                 JsfUtil.addErrorMessage(ResourceBundle.getBundle("/Bundle").getString("NotEnoughStock"));
             }
         }
 	sendJMSMessageToLogging(c.getCartPK().getCustomerId() + " has confirmed their order.");
-        return rMessage;
+        return prepareList();
     }
 
     public String prepareList() {
@@ -295,7 +293,7 @@ public class CartController implements Serializable {
     }
     
     public String cancelCart(){
-        int custId = 12345;
+        int custId = CustomersController.getCustomersInstance().getCustomerId();
         ejbFacade.removeAllFromCart(custId);
         JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("AllCartDeleted"));
 		sendJMSMessageToLogging(custId + " cancelled their order.");

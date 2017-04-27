@@ -5,6 +5,7 @@ import all.util.PaginationHelper;
 import all_bean.SalesFacade;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.ResourceBundle;
 import javax.ejb.EJB;
 import javax.inject.Named;
@@ -63,6 +64,9 @@ public class SalesController implements Serializable {
 
     public String prepareList() {
         recreateModel();
+        int custId = CustomersController.getCustomersInstance().getCustomerId();
+        List list = ejbFacade.getByCustId(custId);
+        items = new ListDataModel(list);
         return "List";
     }
 

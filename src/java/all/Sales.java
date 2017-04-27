@@ -24,6 +24,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Sales.findByItemId", query = "SELECT s FROM Sales s WHERE s.itemId = :itemId")
     , @NamedQuery(name = "Sales.findByCustomerId", query = "SELECT s FROM Sales s WHERE s.customerId = :customerId")
     , @NamedQuery(name = "Sales.getMaxId", query = "SELECT MAX(s.saleId) FROM Sales s")})
+    
 public class Sales implements Serializable {
 
     private static final long serialVersionUID = 1L;
