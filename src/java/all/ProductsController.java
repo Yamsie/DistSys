@@ -132,7 +132,7 @@ public class ProductsController implements Serializable {
     public String prepareSearchView() {
         current = null;
         items = null;
-        String message = "";
+        String message = null;
         try{
             if(this.searchChoice.equals("name")){
                 List pList = ejbFacade.getByName(searchItem);

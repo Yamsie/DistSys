@@ -149,7 +149,6 @@ public class CustomersController implements Serializable {
     }
 
     public String prepareSearchView() {
-        current = null;
         items = null;
         String returnMessage = null;
         try{

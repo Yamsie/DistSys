@@ -13,33 +13,27 @@
             <h:panelGroup id="messagePanel" layout="block">
                 <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
             </h:panelGroup>
+            <h:outputText escape="false" value="#{bundle.ListProductsEmpty}" rendered="#{productsController.items.rowCount == 0}"/>
             <h:form>
                 <h:panelGrid columns="2">
-                    <h:outputText value="#{bundle.ViewProductsLabel_itemId}"/>
-                    <h:outputText value="#{productsController.selected.itemId}" title="#{bundle.ViewProductsTitle_itemId}"/>
-                    <h:outputText value="#{bundle.ViewProductsLabel_name}"/>
-                    <h:outputText value="#{productsController.selected.name}" title="#{bundle.ViewProductsTitle_name}"/>
-                    <h:outputText value="#{bundle.ViewProductsLabel_size}"/>
-                    <h:outputText value="#{productsController.selected.size}" title="#{bundle.ViewProductsTitle_size}"/>
-                    <h:outputText value="#{bundle.ViewProductsLabel_price}"/>
-                    <h:outputText value="#{productsController.selected.price}" title="#{bundle.ViewProductsTitle_price}"/>
-                    <h:outputText value="#{bundle.ViewProductsLabel_colour}"/>
-                    <h:outputText value="#{productsController.selected.colour}" title="#{bundle.ViewProductsTitle_colour}"/>
-                    <h:outputText value="#{bundle.ViewProductsLabel_quantity}"/>
-                    <h:outputText value="#{productsController.selected.quantity}" title="#{bundle.ViewProductsTitle_quantity}"/>
+                    <h:outputText value="Item Id"/>
+                    <h:outputText value="#{productsController.selected.itemId}" title="Item Id"/>
+                    <h:outputText value="Name"/>
+                    <h:outputText value="#{productsController.selected.name}" title="Name"/>
+                    <h:outputText value="Size"/>
+                    <h:outputText value="#{productsController.selected.size}" title="Size"/>
+                    <h:outputText value="Price"/>
+                    <h:outputText value="#{productsController.selected.price}" title="Price"/>
+                    <h:outputText value="Colour"/>
+                    <h:outputText value="#{productsController.selected.colour}" title="Colour"/>
+                    <h:outputText value="Quantity"/>
+                    <h:outputText value="#{productsController.selected.quantity}" title="Quantity"/>
                 </h:panelGrid>
                 <br />
-                <h:commandLink action="#{productsController.destroyAndView}" value="#{bundle.ViewProductsDestroyLink}"/>
+                <h:commandLink action="#{productsController.prepareList}" value="All products"/>
                 <br />
                 <br />
-                <h:link outcome="Edit" value="#{bundle.ViewProductsEditLink}"/>
-                <br />
-                <h:commandLink action="#{productsController.prepareCreate}" value="#{bundle.ViewProductsCreateLink}" />
-                <br />
-                <h:commandLink action="#{productsController.prepareList}" value="#{bundle.ViewProductsShowAllLink}"/>
-                <br />
-                <br />
-                <h:link outcome="/index" value="#{bundle.ViewProductsIndexLink}"/>
+                <h:link outcome="/index" value="Index"/>
 
             </h:form>
         </ui:define>

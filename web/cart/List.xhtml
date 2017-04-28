@@ -7,7 +7,7 @@
 
     <ui:composition template="/template.xhtml">
         <ui:define name="title">
-            <h:outputText value="#{bundle.ListCartTitle}"></h:outputText>
+            <h:outputText value="Cart"></h:outputText>
         </ui:define>
         <ui:define name="body">
             <h:form styleClass="jsfcrud_list_form">
@@ -37,16 +37,6 @@
                                 <h:outputText value="#{bundle.ListCartTitle_quantity}"/>
                             </f:facet>
                             <h:outputText value="#{item.quantity}"/>
-                        </h:column>
-                        <h:column>
-                            <f:facet name="header">
-                                <h:outputText value="&nbsp;"/>
-                            </f:facet>
-                            <h:commandLink action="#{cartController.prepareView}" value="#{bundle.ListCartViewLink}"/>
-                            <h:outputText value=" "/>
-                            <h:commandLink action="#{cartController.prepareEdit}" value="#{bundle.ListCartEditLink}"/>
-                            <h:outputText value=" "/>
-                            <h:commandLink action="#{cartController.destroy}" value="#{bundle.ListCartDestroyLink}"/>
                         </h:column>
                     </h:dataTable>
                 </h:panelGroup>
