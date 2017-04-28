@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <h:outputStylesheet name="css/jsfcrud.css"/>
+    </h:head>
+    <h:body>
+        
+        <c:if test="#{!empty adminsController.current}">
+            Currently logged in as #{adminsController.name}
+            <h:form>
+                <h:commandLink action="/admin/Create" value="Create Product"/>
+                <br />
+                <h:link outcome="/admin/editProductsPage" value="Edit Products"/>
+                <br />
+                <h:commandLink value="Logout" action="#{adminsController.logout()}"/>
+            <br />
+            </h:form>
+        </c:if>
+        <c:if test="#{empty adminsController.current}">
+                Admin access only
+            <br />
+        </c:if>
+        <br />
+        
+    </h:body>
+</html>
+
