@@ -24,7 +24,7 @@ public class CartPK implements Serializable {
     private int customerId;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "ITEM_ID")
+    @Column(name = "ITEMID")
     private int itemId;
 
     public CartPK() {

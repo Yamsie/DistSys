@@ -40,7 +40,7 @@ public class Sales implements Serializable {
     private Integer saleId;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "ITEM_ID")
+    @Column(name = "ITEMID")
     private int itemId;
     @Basic(optional = false)
     @NotNull

@@ -122,7 +122,7 @@ public class CustomersController implements Serializable {
         this.password = null;
         this.current = null;
         
-        return "login.xhtml";
+        return "/login.xhtml";
     }
 
     public String checkCredentials() {
