@@ -2,13 +2,13 @@ package all;
 
 import all.util.JsfUtil;
 import all.util.PaginationHelper;
-import all_bean.CustomersFacade;
+import all_bean.AdminsFacade;
+
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.List;
 import java.util.ResourceBundle;
 import javax.ejb.EJB;
 import javax.inject.Named;
@@ -21,61 +21,33 @@ import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
 
-@Named("customersController")
+@Named("adminsController")
 @SessionScoped
-public class CustomersController implements Serializable {
+public class AdminsController implements Serializable {
 
-
-    private static Customers current; // Static becaue there can only be one customer logged in at a time
+    private Admins current;
     private DataModel items = null;
     @EJB
-    private all_bean.CustomersFacade ejbFacade;
+    private all_bean.AdminsFacade ejbFacade;
     private PaginationHelper pagination;
     private int selectedItemIndex;
-    //username and password of user trying to log in
-    private String username;
+    private String name;
     private String password;
-    private String searchItem;
-    private String searchChoice;
 
-    public String getSearchChoice() {
-        return searchChoice;
-    }
-
-    public void setSearchChoice(String searchChoice) {
-        this.searchChoice = searchChoice;
-    }
-
-    public String getSearchItem() {
-        return searchItem;
-    }
-
-    public void setSearchItem(String searchItem) {
-        this.searchItem = searchItem;
-    }
-    
-    public Customers getCurrent() {
+    public Admins getCurrent() {
         return current;
     }
-    
-    public void setCurrent(Customers customers) {
-        current = customers;
-    }
-    
-    //used to get an instance of the logged in customer from another class
-    public static Customers getCustomersInstance() {
-        return current;
-    }
-    
-    public CustomersController() {
+
+    public void setCurrent(Admins current) {
+        this.current = current;
     }
 
-    public String getUsername() {
-        return username;
+    public String getName() {
+        return name;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setName(String username) {
+        this.name = username;
     }
 
     public String getPassword() {
@@ -89,15 +61,38 @@ public class CustomersController implements Serializable {
         this.password = hashedString;
     }
 
-    public Customers getSelected() {
+    public AdminsController() {
+    }
+    
+    public String checkCredentials() {
+        Admins c = getFacade().getByUsernameAndPassword(this.name, this.password);
+        
+        if (c != null) {
+            current = c;
+            return "adminPanel.xhtml";
+        } else {
+            current = null;
+            return "adminLogin.xhtml";
+        }        
+    }
+
+    public Admins getSelected() {
         if (current == null) {
-            current = new Customers();
+            current = new Admins();
             selectedItemIndex = -1;
         }
         return current;
     }
+    
+    public String logout() {
+        this.name = null;
+        this.password = null;
+        this.current = null;
+        
+        return "adminLogin.xhtml";
+    }
 
-    private CustomersFacade getFacade() {
+    private AdminsFacade getFacade() {
         return ejbFacade;
     }
 
@@ -118,62 +113,20 @@ public class CustomersController implements Serializable {
         }
         return pagination;
     }
-    
-    public String logout() {
-        this.username = null;
-        this.password = null;
-        current = null;
-        
-        return "login.xhtml";
-    }
 
-    public String checkCredentials() {
-        Customers c = getFacade().getByUsernameAndPassword(this.username, this.password);
-	
-        if (c != null) {
-            current = c;
-            return "index.xhtml";
-        } else {
-            current = null;
-            return "login.xhtml";
-        }        
-    }
-    
     public String prepareList() {
         recreateModel();
-        return "/customers/List";
+        return "List";
     }
 
     public String prepareView() {
-        current = (Customers) getItems().getRowData();
+        current = (Admins) getItems().getRowData();
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
         return "View";
     }
 
-    public String prepareSearchView() {
-        items = null;
-        String returnMessage = null;
-        try{
-            if(this.searchChoice.equals("name")){
-                List custList = ejbFacade.getByName(searchItem);
-                items = new ListDataModel(custList);
-                returnMessage = "customers/List";
-            }
-            else{
-                int id = Integer.parseInt(this.searchItem.trim());
-                List list = ejbFacade.findCust(id);
-                items = new ListDataModel(list);
-                returnMessage = "customers/View";
-            }
-        }
-        catch(Exception ex) {
-            JsfUtil.addErrorMessage(ResourceBundle.getBundle("/Bundle").getString("IdNumberError"));
-        }
-        return returnMessage;
-    }
-    
     public String prepareCreate() {
-        current = new Customers();
+        current = new Admins();
         selectedItemIndex = -1;
         return "Create";
     }
@@ -181,7 +134,7 @@ public class CustomersController implements Serializable {
     public String create() {
         try {
             getFacade().create(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("CustomersCreated"));
+            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("AdminsCreated"));
             return prepareCreate();
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
@@ -190,7 +143,7 @@ public class CustomersController implements Serializable {
     }
 
     public String prepareEdit() {
-        current = (Customers) getItems().getRowData();
+        current = (Admins) getItems().getRowData();
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
         return "Edit";
     }
@@ -198,8 +151,8 @@ public class CustomersController implements Serializable {
     public String update() {
         try {
             getFacade().edit(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("CustomersUpdated"));
-            return "/profile";
+            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("AdminsUpdated"));
+            return "View";
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
             return null;
@@ -207,7 +160,7 @@ public class CustomersController implements Serializable {
     }
 
     public String destroy() {
-        current = (Customers) getItems().getRowData();
+        current = (Admins) getItems().getRowData();
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
         performDestroy();
         recreatePagination();
@@ -231,7 +184,7 @@ public class CustomersController implements Serializable {
     private void performDestroy() {
         try {
             getFacade().remove(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("CustomersDeleted"));
+            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("AdminsDeleted"));
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
         }
@@ -260,9 +213,7 @@ public class CustomersController implements Serializable {
     }
 
     private void recreateModel() {
-        //items = null;
-        List custList = ejbFacade.getOtherCustomers(current.getCustomerId());
-        items = new ListDataModel(custList);
+        items = null;
     }
 
     private void recreatePagination() {
@@ -289,21 +240,21 @@ public class CustomersController implements Serializable {
         return JsfUtil.getSelectItems(ejbFacade.findAll(), true);
     }
 
-    public Customers getCustomers(java.lang.Integer id) {
+    public Admins getAdmins(java.lang.Integer id) {
         return ejbFacade.find(id);
     }
 
-    @FacesConverter(forClass = Customers.class)
-    public static class CustomersControllerConverter implements Converter {
+    @FacesConverter(forClass = Admins.class)
+    public static class AdminsControllerConverter implements Converter {
 
         @Override
         public Object getAsObject(FacesContext facesContext, UIComponent component, String value) {
             if (value == null || value.length() == 0) {
                 return null;
             }
-            CustomersController controller = (CustomersController) facesContext.getApplication().getELResolver().
-                    getValue(facesContext.getELContext(), null, "customersController");
-            return controller.getCustomers(getKey(value));
+            AdminsController controller = (AdminsController) facesContext.getApplication().getELResolver().
+                    getValue(facesContext.getELContext(), null, "adminsController");
+            return controller.getAdmins(getKey(value));
         }
 
         java.lang.Integer getKey(String value) {
@@ -323,11 +274,11 @@ public class CustomersController implements Serializable {
             if (object == null) {
                 return null;
             }
-            if (object instanceof Customers) {
-                Customers o = (Customers) object;
-                return getStringKey(o.getCustomerId());
+            if (object instanceof Admins) {
+                Admins o = (Admins) object;
+                return getStringKey(o.getAdminId());
             } else {
-                throw new IllegalArgumentException("object " + object + " is of type " + object.getClass().getName() + "; expected type: " + Customers.class.getName());
+                throw new IllegalArgumentException("object " + object + " is of type " + object.getClass().getName() + "; expected type: " + Admins.class.getName());
             }
         }
 

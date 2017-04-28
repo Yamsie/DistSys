@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.EditAdminsTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="#{bundle.EditAdminsLabel_adminId}" for="adminId" />
+                    <h:inputText id="adminId" value="#{adminsController.selected.adminId}" title="#{bundle.EditAdminsTitle_adminId}" required="true" requiredMessage="#{bundle.EditAdminsRequiredMessage_adminId}"/>
+                    <h:outputLabel value="#{bundle.EditAdminsLabel_name}" for="name" />
+                    <h:inputText id="name" value="#{adminsController.selected.name}" title="#{bundle.EditAdminsTitle_name}" required="true" requiredMessage="#{bundle.EditAdminsRequiredMessage_name}"/>
+                    <h:outputLabel value="#{bundle.EditAdminsLabel_password}" for="password" />
+                    <h:inputText id="password" value="#{adminsController.selected.password}" title="#{bundle.EditAdminsTitle_password}" required="true" requiredMessage="#{bundle.EditAdminsRequiredMessage_password}"/>
+                    <h:outputLabel value="#{bundle.EditAdminsLabel_email}" for="email" />
+                    <h:inputText id="email" value="#{adminsController.selected.email}" title="#{bundle.EditAdminsTitle_email}" />
+                </h:panelGrid>
+                <h:commandLink action="#{adminsController.update}" value="#{bundle.EditAdminsSaveLink}"/>
+                <br />
+                <br />
+                <h:link outcome="View" value="#{bundle.EditAdminsViewLink}"/>
+                <br />
+                <h:commandLink action="#{adminsController.prepareList}" value="#{bundle.EditAdminsShowAllLink}" immediate="true"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.EditAdminsIndexLink}" />
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

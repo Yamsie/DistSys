@@ -2,7 +2,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
         <title>Login</title>
         <h:outputStylesheet name="css/jsfcrud.css"/>
@@ -10,6 +11,11 @@
     <h:body>
         Customer Login
     <br />
+    <!-- "if" checks are to check the following:
+      - if there is a customer logged in, they cannot access this page
+      - if there is a no admin or customer logged in, they may access this page
+      - if there is an admin logged in they may not access this page
+    -->
         <h:form>
             <c:if test="#{!empty customersController.current}">
                 <h:commandLink action="#{customersController.logout()}" value="Please log out to access this page"/>
@@ -19,10 +25,13 @@
             </c:if>
             <c:if test="#{(empty customersController.current) &amp;&amp; (empty adminsController.current)}">
                 <h:outputText value="Username: " />
-                <h:inputText id="username" value="#{customersController.username}" /><br />
+                <h:inputText id="username" value="#{customersController.username}" validatorMessage="#{customersController.username} is not valid" required="true" maxlength="25" ><br />
+                    <f:validateRegex pattern="^[a-zA-Z0-9]*$" />
+                </h:inputText>
+                <br />
 
-                <h:outputText value="Password:  " />
-                <h:inputSecret id="password" value="#{customersController.password}" /><br />
+                <h:outputText value="Password: " />
+                <h:inputSecret id="password" value="#{customersController.password}" maxlength="255" /><br />
 
                 <h:commandButton id="submit" action="#{customersController.checkCredentials}" value="Submit" />
             </c:if>
