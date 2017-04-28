@@ -25,7 +25,7 @@
             </c:if>
             <c:if test="#{(empty customersController.current) &amp;&amp; (empty adminsController.current)}">
                 <h:outputText value="Username: " />
-                <h:inputText id="username" value="#{customersController.username}" validatorMessage="#{customersController.username} is not valid" maxlength="25" ><br />
+                <h:inputText id="username" value="#{customersController.username}" validatorMessage="Username is not valid" maxlength="25" ><br />
                     <f:validateRegex pattern="^[a-zA-Z0-9]*$" />
                 </h:inputText>
                 <br />
@@ -39,7 +39,7 @@
                 <!-- In a real life implementation, a direct link to the admin login page would
                 - not be given to customers, but for ease of navigability and testing purposes 
                 - we have included it -->
-                <h:commandLink action="adminLogin.xhtml" value="Admin Login"/>
+                <h:commandLink action="admin/adminLogin" value="Admin Login"/>
             </c:if>
         </h:form>
     </h:body>

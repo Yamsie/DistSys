@@ -195,7 +195,7 @@ public class ProductsController implements Serializable {
         recreatePagination();
         recreateModel();
 	sendJMSMessageToLogging("Admin deleted a Product from the store");
-        return "List";
+        return "admin/editProductsPage";
     }
 
     public String destroyAndView() {
@@ -203,11 +203,11 @@ public class ProductsController implements Serializable {
         recreateModel();
         updateCurrentItem();
         if (selectedItemIndex >= 0) {
-            return "View";
+            return "admin/editProductsPage";
         } else {
             // all items were removed - go back to list
             recreateModel();
-            return "List";
+            return "admin/editProductsPage";
         }
     }
 

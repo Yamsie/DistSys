@@ -4,36 +4,32 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
-    <head> 
+    <h:head> 
         <h:outputStylesheet name="css/jsfcrud.css"/> 
-    </head>
-    <h:outputText value="#{bundle.EditProductsTitle}"></h:outputText>
+    </h:head>
+    <h:outputText value="Edit Product"></h:outputText>
     <h:panelGroup id="messagePanel" layout="block">
         <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
     </h:panelGroup>
     <h:form>
         <h:panelGrid columns="2">
-            <h:outputLabel value="#{bundle.EditProductsLabel_itemId}" for="itemId" />
-            <h:inputText id="itemId" value="#{productsController.selected.itemId}" title="#{bundle.EditProductsTitle_itemId}" required="true" requiredMessage="#{bundle.EditProductsRequiredMessage_itemId}"/>
-            <h:outputLabel value="#{bundle.EditProductsLabel_name}" for="name" />
-            <h:inputText id="name" value="#{productsController.selected.name}" title="#{bundle.EditProductsTitle_name}" />
-            <h:outputLabel value="#{bundle.EditProductsLabel_size}" for="size" />
-            <h:inputText id="size" value="#{productsController.selected.size}" title="#{bundle.EditProductsTitle_size}" />
-            <h:outputLabel value="#{bundle.EditProductsLabel_price}" for="price" />
-            <h:inputText id="price" value="#{productsController.selected.price}" title="#{bundle.EditProductsTitle_price}" />
-            <h:outputLabel value="#{bundle.EditProductsLabel_colour}" for="colour" />
-            <h:inputText id="colour" value="#{productsController.selected.colour}" title="#{bundle.EditProductsTitle_colour}" />
-            <h:outputLabel value="#{bundle.EditProductsLabel_quantity}" for="quantity" />
-            <h:inputText id="quantity" value="#{productsController.selected.quantity}" title="#{bundle.EditProductsTitle_quantity}" />
+            <h:outputLabel value="Item Id" for="itemId" />
+            <h:inputText id="itemId" value="#{productsController.selected.itemId}" title="ItemId" required="true" requiredMessage="#{bundle.RequiredMessage}"/>
+            <h:outputLabel value="name" for="name" />
+            <h:inputText id="name" value="#{productsController.selected.name}" title="name" />
+            <h:outputLabel value="size" for="size" />
+            <h:inputText id="size" value="#{productsController.selected.size}" title="size" />
+            <h:outputLabel value="price" for="price" />
+            <h:inputText id="price" value="#{productsController.selected.price}" title="price" />
+            <h:outputLabel value="colour" for="colour" />
+            <h:inputText id="colour" value="#{productsController.selected.colour}" title="colour" />
+            <h:outputLabel value="quantity" for="quantity" />
+            <h:inputText id="quantity" value="#{productsController.selected.quantity}" title="quantity" />
         </h:panelGrid>
-        <h:commandLink action="#{productsController.update}" value="#{bundle.EditProductsSaveLink}"/>
+        <h:commandLink action="#{productsController.update}" value="Save"/>
         <br />
+        <h:commandLink action="#{productsController.prepareList}" value="Show All Products" immediate="true"/>
         <br />
-        <h:link outcome="View" value="#{bundle.EditProductsViewLink}"/>
-        <br />
-        <h:commandLink action="#{productsController.prepareList}" value="#{bundle.EditProductsShowAllLink}" immediate="true"/>
-        <br />
-        <br />
-        <h:link outcome="/admin/index" value="#{bundle.EditAdminIndexLink}" />
+        <h:link outcome="/admin/adminPanel" value="Index" />
     </h:form>
 </html>

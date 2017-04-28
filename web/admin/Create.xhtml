@@ -5,7 +5,7 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head> 
         <h:outputStylesheet name="css/jsfcrud.css"/> 
-        <h:outputText value="#{bundle.CreateProductsTitle}"></h:outputText>
+        <h:outputText value="Create Product"></h:outputText>
     </h:head>
     <h:body>
     <h:panelGroup id="messagePanel" layout="block">
@@ -13,21 +13,22 @@
     </h:panelGroup>
     <h:form>
         <h:panelGrid columns="2">
-            <h:outputLabel value="#{bundle.CreateProductsLabel_itemId}" for="itemId" />
-            <h:inputText id="itemId" value="#{productsController.selected.itemId}" title="#{bundle.CreateProductsTitle_itemId}" required="true" requiredMessage="#{bundle.CreateProductsRequiredMessage_itemId}"/>
-            <h:outputLabel value="#{bundle.CreateProductsLabel_name}" for="name" />
-            <h:inputText id="name" value="#{productsController.selected.name}" title="#{bundle.CreateProductsTitle_name}" />
-            <h:outputLabel value="#{bundle.CreateProductsLabel_size}" for="size" />
-            <h:inputText id="size" value="#{productsController.selected.size}" title="#{bundle.CreateProductsTitle_size}" />
-            <h:outputLabel value="#{bundle.CreateProductsLabel_price}" for="price" />
-            <h:inputText id="price" value="#{productsController.selected.price}" title="#{bundle.CreateProductsTitle_price}" />
-            <h:outputLabel value="#{bundle.CreateProductsLabel_colour}" for="colour" />
-            <h:inputText id="colour" value="#{productsController.selected.colour}" title="#{bundle.CreateProductsTitle_colour}" />
-            <h:outputLabel value="#{bundle.CreateProductsLabel_quantity}" for="quantity" />
-            <h:inputText id="quantity" value="#{productsController.selected.quantity}" title="#{bundle.CreateProductsTitle_quantity}" />
+            <h:outputLabel value="ItemId" for="itemId" />
+            <h:inputText id="itemId" value="#{productsController.selected.itemId}" title="ItemId" required="true" requiredMessage="#{bundle.RequiredMessage}"/>
+            <h:outputLabel value="name" for="name" />
+            <h:inputText id="name" value="#{productsController.selected.name}" title="name" />
+            <h:outputLabel value="size" for="size" />
+            <h:inputText id="size" value="#{productsController.selected.size}" title="size" />
+            <h:outputLabel value="price" for="price" />
+            <h:inputText id="price" value="#{productsController.selected.price}" title="price" />
+            <h:outputLabel value="colour" for="colour" />
+            <h:inputText id="colour" value="#{productsController.selected.colour}" title="colour" />
+            <h:outputLabel value="quantity" for="quantity" />
+            <h:inputText id="quantity" value="#{productsController.selected.quantity}" title="quantity" />
         </h:panelGrid>
+        <h:commandButton action ="#{productsController.create}" value ="Save" />
         <br />
-        <h:link outcome="/admin/index" value="Back to index"/>
+        <h:link outcome="/admin/adminPanel" value="Back to index"/>
     </h:form>
     </h:body>
 </html>
